@@ -1,0 +1,14 @@
+.time-picker-input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  width: auto;
+  height: auto;
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+}
