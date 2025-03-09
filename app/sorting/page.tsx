@@ -31,7 +31,7 @@ const Notifications = () => {
 
   console.log(currentSorts);
   return (
-    <div>
+    <div className="h-screen w-full   flex items-center justify-center bg-gray-50">
       <SortingComponent
         config={fakeSortingConfig}
         onSortChange={handleSortChange}
