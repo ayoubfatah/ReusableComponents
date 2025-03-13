@@ -1,6 +1,6 @@
 "use client";
 import { ChevronRight, File, Folder } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 type FileSystemNode = {
   name: string;
@@ -135,8 +135,24 @@ export default function FileExplorer() {
       {
         name: "Courses",
         folder: [
-          { name: "AWS", folder: [{ name: "Section 1", folder: [] }] },
-          { name: "JavaScript", folder: [{ name: "Fundamentals.js" }] },
+          {
+            name: "AWS",
+            folder: [
+              {
+                name: "Section 1",
+                folder: [{ name: "Aws Fundamentals.js" }],
+              },
+            ],
+          },
+          {
+            name: "JavaScript",
+            folder: [
+              {
+                name: "Section 1",
+                folder: [{ name: "Fundamentals.js" }],
+              },
+            ],
+          },
           { name: "React.js", folder: [{ name: "project" }] },
           { name: "Next.js", folder: [] },
         ],
@@ -146,10 +162,11 @@ export default function FileExplorer() {
 
   return <FileTreeNode node={fileSystemData} />;
 }
-function FileTreeNode({ node }: { node: FileSystemNode }) {
+const FileTreeNode = function ({ node }: { node: FileSystemNode }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const isFolder = !!node.folder;
   const isEmpty = isFolder && node?.folder?.length === 0;
+
   return (
     <ul
       className={`${isFolder ? "pl-8" : "p-0"} ${
@@ -192,4 +209,4 @@ function FileTreeNode({ node }: { node: FileSystemNode }) {
       </li>
     </ul>
   );
-}
+};
