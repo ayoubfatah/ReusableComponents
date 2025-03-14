@@ -1,0 +1,14 @@
+span {
+  color: #ec4e39;
+}
+
+.mask {
+  mask-image: url("../../public/mask.svg");
+  background-color: #ec4e39;
+  mask-repeat: no-repeat;
+  color: black;
+}
+
+.hide-cursor {
+  cursor: none;
+}

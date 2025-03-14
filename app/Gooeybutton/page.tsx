@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect, useState } from "react";
 import { Bell, Home, Mail, Settings, User } from "./icons";
+import { motion } from "framer-motion";
 
 type Buttons = {
   icon: ReactNode;
@@ -136,70 +137,66 @@ const GooeyButtonMenu = ({
 };
 
 export default function Page() {
-  // Example of custom buttons configuration
-  const customButtons = [
-    {
-      icon: <Home />,
-      position: { x: -120, y: 3 },
-      delay: 0,
-    },
-    {
-      icon: <Bell />,
-      position: { x: -85, y: -85 },
-      delay: 0.12,
-    },
-    {
-      icon: <Mail />,
-      position: { x: 0, y: -120 },
-      delay: 0.22,
-    },
-    {
-      icon: <User />,
-      position: { x: 85, y: -85 },
-      delay: 0.32,
-    },
+  const [position, setPosition] = useState<"top" | "right" | "left">("top");
 
-    {
-      icon: <Settings />,
-      position: { x: 120, y: 3 },
-      delay: 0.42,
-    },
-  ];
+  function initialPositions(): Buttons[] {
+    const customButtonsLeft = [
+      { icon: <User />, position: { x: 0, y: -120 }, delay: 0.42 },
+      { icon: <Mail />, position: { x: -95, y: -90 }, delay: 0.32 },
+      { icon: <Home />, position: { x: -125, y: 0 }, delay: 0.22 },
+      { icon: <Bell />, position: { x: -95, y: 85 }, delay: 0.12 },
+      { icon: <Settings />, position: { x: 0, y: 120 }, delay: 0 },
+    ];
+    const customButtonsRight = [
+      { icon: <User />, position: { x: 0, y: -120 }, delay: 0.42 },
+      { icon: <Mail />, position: { x: 85, y: -85 }, delay: 0.32 },
+      { icon: <Home />, position: { x: 120, y: 0 }, delay: 0.22 },
+      { icon: <Bell />, position: { x: 95, y: 90 }, delay: 0.12 },
+      { icon: <Settings />, position: { x: 0, y: 120 }, delay: 0.0 },
+    ];
+    const customButtonsTop = [
+      { icon: <Home />, position: { x: -120, y: 3 }, delay: 0 },
+      { icon: <Bell />, position: { x: -85, y: -85 }, delay: 0.12 },
+      { icon: <Mail />, position: { x: 0, y: -120 }, delay: 0.22 },
+      { icon: <User />, position: { x: 85, y: -85 }, delay: 0.32 },
+      { icon: <Settings />, position: { x: 120, y: 3 }, delay: 0.42 },
+    ];
+    if (position == "right") return customButtonsRight;
+    if (position == "left") return customButtonsLeft;
+    return customButtonsTop;
+  }
 
   return (
-    <GooeyButtonMenu
-      buttons={customButtons}
-      color="black"
-      mainButtonSize={70}
-      childButtonSize={60}
-      blurRadius={12}
-    />
+    <div className="flex flex-col items-center">
+      {/* Buttons for selection */}
+      <div className="relative flex justify-center gap-10 translate-y-[100px]">
+        {["left", "top", "right"].map((pos) => (
+          <button
+            key={pos}
+            className="relative cursor-pointer px-4 py-2 font-semibold"
+            onClick={() => setPosition(pos as "top" | "right" | "left")}
+          >
+            {pos.toUpperCase()}
+            {position === pos && (
+              <motion.div
+                layoutId="activeIndicator"
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 h-1 w-[4px] bg-black rounded-full"
+              />
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* GooeyButtonMenu */}
+      <GooeyButtonMenu
+        buttons={initialPositions()}
+        color="black"
+        mainButtonSize={70}
+        childButtonSize={60}
+        blurRadius={12}
+      />
+    </div>
   );
 }
 
 // to the right
-// {
-//   icon: <Home />,
-//   position: { x: 0, y: 120 },
-//   delay: 0,
-// },
-// {
-//   icon: <Bell />,
-//   position: { x: 95, y: 90 },
-//   delay: 0.12,
-// },
-// {
-//   icon: <Mail />,
-//   position: { x: 0, y: -120 },
-//   delay: 0.22,
-// },
-// {
-//   icon: <User />,
-//   position: { x: 85, y: -85 },
-//   delay: 0.32,
-// },
-// {
-//   icon: <Settings />,
-//   position: { x: 120, y: 0 },
-//   delay: 0.42,
-// },
