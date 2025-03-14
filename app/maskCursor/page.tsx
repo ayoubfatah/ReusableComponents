@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import "./style.css";
+import "./gooey.css";
 import useMousePosition from "./useMousePosition";
 import { motion } from "framer-motion";
 
@@ -9,7 +9,7 @@ export default function Page() {
   const { x, y } = useMousePosition();
   const size = isHovered ? 400 : 40;
   return (
-    <main className="h-screen !bg-black text-gray-50 cursor-none">
+    <main className="h-screen !bg-black text-gray-50/90 cursor-none font-semibold ">
       <motion.div
         animate={{
           WebkitMaskSize: `${size}px`,
@@ -19,7 +19,7 @@ export default function Page() {
           type: "tween",
           ease: "backOut",
         }}
-        className="mask w-full cursor-none  absolute h-full flex items-center justify-center text-[60px] leading-[66px]"
+        className="mask  w-full cursor-none  absolute h-full flex items-center justify-center text-[60px] leading-[66px]"
       >
         <p
           onMouseEnter={() => setIsHovered(true)}

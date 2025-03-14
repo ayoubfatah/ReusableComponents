@@ -3,6 +3,7 @@ span {
 }
 
 .mask {
+  transform: translateY(-30px);
   mask-image: url("../../public/mask.svg");
   background-color: #ec4e39;
   mask-repeat: no-repeat;
