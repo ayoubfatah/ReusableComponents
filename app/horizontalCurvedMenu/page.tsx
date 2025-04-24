@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import "./horizontal.css";
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
 
 export const menuSlide = {
   initial: {
@@ -17,18 +18,24 @@ export const menuSlide = {
   },
 };
 
+// Simple navigation links data
+const navLinks = [
+  { title: "Home", href: "/" },
+  { title: "About", href: "/about" },
+  { title: "Services", href: "/services" },
+  { title: "Contact", href: "/contact" },
+];
+
 export default function Page() {
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+  // prettier-ignore
+  const initialPath = `M0 0 Q ${window.innerWidth / 2} 220 ${window.innerWidth} 0`;
 
-  //prettier-ignore
-  const initialPath = `M0 0 Q 1000 220 2000 0`;
-  //prettier-ignore
-  // const targetPath = `M0 0 Q 1000 0 2000 0`;
-  const targetPath = `M0 0 Q 1000 0 2000 0`;
+  const targetPath = `M0 0 Q ${window.innerWidth / 2} 0 ${window.innerWidth} 0`;
 
   const pathAnimation = {
     initial: {
@@ -70,16 +77,27 @@ export default function Page() {
               animate="enter"
               exit="exit"
               initial="initial"
-              className="bg-white w-full h-[250px] top-0 left-0"
+              className="bg-white w-full h-[250px] top-0 left-0 flex items-center justify-center"
             >
-              <div>s</div>
+              <div className="flex gap-8 relative z-10">
+                {" "}
+                {navLinks.map((link, index) => (
+                  <Link
+                    key={index}
+                    href={link.href}
+                    className="text-black text-xl font-medium hover:text-blue-600 transition-colors duration-200" // Tailwind styling for links
+                  >
+                    {link.title}
+                  </Link>
+                ))}
+              </div>
+
               <svg className="svgCurveHorizontal">
                 <motion.path
                   variants={pathAnimation}
                   initial="initial"
                   animate="enter"
                   exit="exit"
-                  // d="M0 0 Q 1000 100 2000 0"
                 />
               </svg>
             </motion.nav>

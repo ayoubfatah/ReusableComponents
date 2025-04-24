@@ -14,7 +14,7 @@ export default function Navbar() {
       exit="exit"
       initial="initial"
       className={cn(
-        "  flex flex-col justify-center items-center bg-[#292929] z-[10]   w-[350px] h-full fixed top-0 right-0"
+        "  flex flex-col justify-center items-center bg-white  z-[10]   w-[350px] h-full fixed top-0 right-0"
       )}
     >
       <ul className="flex flex-col justify-center gap-10 text-white text-[28px] cursor-pointer">
@@ -26,6 +26,7 @@ export default function Navbar() {
             exit="exit"
             initial="initial"
             custom={i}
+            className="text-black"
           >
             {nav.title}
           </motion.li>

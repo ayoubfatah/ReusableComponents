@@ -3,8 +3,6 @@ import "./curvedMenu.css";
 
 export default function Curve() {
   //prettier-ignore
-
-  //   M : move the current point
   const initialPath = `M100 0 L100 ${window.innerHeight} Q-100 ${window.innerHeight/2} 100 0`;
   //prettier-ignore
   const targetPath = `M100 0 L100 ${window.innerHeight} Q100 ${window.innerHeight/2} 100 0`;
