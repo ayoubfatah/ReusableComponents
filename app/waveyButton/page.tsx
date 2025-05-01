@@ -90,13 +90,12 @@ export default function FilteredButton() {
           </filter>
         </defs>
       </svg>
-
       <button
         ref={buttonRef}
         className="flex flex-col items-center px-9 py-4 rounded text-white text-2xl font-normal bg-gradient-to-b from-zinc-700 to-zinc-800 transition-transform duration-200 cursor-pointer"
         style={{ filter: "url(#svgfm-filter)" }}
       >
-        Click Me
+        Submit
       </button>
     </div>
   );
