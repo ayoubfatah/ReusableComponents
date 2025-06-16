@@ -180,7 +180,7 @@ export default function Page() {
             {position === pos && (
               <motion.div
                 layoutId="activeIndicator"
-                className="absolute bottom-0 left-1/2 -translate-x-1/2 h-1 w-[4px] bg-black rounded-full"
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 h-1 w-[4px] w-full bg-black rounded-full"
               />
             )}
           </button>

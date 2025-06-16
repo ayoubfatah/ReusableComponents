@@ -6,7 +6,8 @@ const nextConfig: NextConfig = {
     domains: [
       "https://st2.depositphotos.com",
       "st2.depositphotos.com",
-      // ... add more domains as needed
+      "images.unsplash.com",
+      "images.unsplash.com",
     ],
   },
 };

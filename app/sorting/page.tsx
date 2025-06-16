@@ -9,8 +9,9 @@ const fakeSortingConfig: {
   {
     title: "Date",
     options: [
-      { label: "Newest first", value: "newest", default: true },
-      { label: "Oldest first", value: "oldest" },
+      { label: "Last Updated", value: "last-updated", default: true },
+      { label: "Project Name", value: "project-name" },
+      { label: "Team Size", value: "team-size" },
     ],
   },
   {
@@ -18,6 +19,13 @@ const fakeSortingConfig: {
     options: [
       { label: "A -> Z", value: "az" },
       { label: "Z -> A", value: "za" },
+    ],
+  },
+  {
+    title: "Archived Posts",
+    options: [
+      { label: "Show", value: "show" },
+      { label: "Hide", value: "hide", default: true },
     ],
   },
 ];
