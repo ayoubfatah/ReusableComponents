@@ -113,10 +113,9 @@ export default function Page() {
   });
 
   // Calculate total height based on number of cards
-  const totalHeight = `${cardData.length * 100}vh`;
 
   return (
-    <main className="relative bg-black" style={{ height: totalHeight }}>
+    <main className="relative bg-black">
       <section className="h-screen flex items-center justify-center bg-black">
         <div className="text-center">
           <h1 className="text-6xl font-bold text-white mb-4 tracking-wider">
