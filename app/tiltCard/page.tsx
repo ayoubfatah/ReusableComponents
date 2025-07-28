@@ -17,8 +17,8 @@ function TiltCard() {
   const mouseXSpring = useSpring(x);
   const mouseYSpring = useSpring(y);
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg","-10deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg","10deg"]); 
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     const { height, width, left, top } = (
@@ -47,7 +47,10 @@ function TiltCard() {
       style={{ transformStyle: "preserve-3d", rotateX, rotateY }}
       className="relative h-96 w-72 rounded-xl bg-gradient-to-br from-indigo-300 to-violet-300"
     >
-      <div className="absolute inset-4 grid place-content-center rounded-xl bg-white shadow-lg font-bold text-2xl">
+      <div
+        style={{ transform: "translateZ(75px)", transformStyle: "preserve-3d" }}
+        className="absolute inset-4 grid place-content-center rounded-xl bg-white shadow-lg font-bold text-2xl"
+      >
         Hover me
       </div>
     </motion.div>
