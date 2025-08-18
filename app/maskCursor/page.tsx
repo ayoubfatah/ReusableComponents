@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import "./gooey.css";
+import "./mask.css";
 import useMousePosition from "./useMousePosition";
 import { motion } from "framer-motion";
 

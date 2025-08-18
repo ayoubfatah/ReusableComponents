@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       "st2.depositphotos.com",
       "images.unsplash.com",
       "images.unsplash.com",
+      ""
     ],
   },
 };

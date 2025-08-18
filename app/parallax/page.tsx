@@ -111,33 +111,6 @@ const Card = ({ data, index, total, scrollYProgress }: CardProps) => {
   // Calculate scroll progress ranges for this card
   const startProgress = index / total;
   const endProgress = (index + 1) / total;
-  const midProgress = (startProgress + endProgress) / 2;
-
-  // Scale animations
-  const scaleIn = useTransform(
-    scrollYProgress,
-    [Math.max(0, startProgress - 0.1), startProgress],
-    [0.6, 1]
-  );
-
-  const scaleOut = useTransform(
-    scrollYProgress,
-    [endProgress - 0.1, Math.min(1, endProgress + 0.1)],
-    [1, isLast ? 1 : 0.6]
-  );
-
-  // Rotation animations
-  const rotateIn = useTransform(
-    scrollYProgress,
-    [Math.max(0, startProgress - 0.1), startProgress],
-    [isFirst ? 0 : -15, 0]
-  );
-
-  const rotateOut = useTransform(
-    scrollYProgress,
-    [endProgress - 0.1, Math.min(1, endProgress + 0.1)],
-    [0, isLast ? 0 : -15]
-  );
 
   // Combine transformations
   const scale = useTransform(

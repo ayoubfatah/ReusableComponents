@@ -4,7 +4,7 @@ import { useMotionValue, motion, useSpring, useTransform } from "framer-motion";
 
 export default function page() {
   return (
-    <div className="h-screen w-screen flex justify-center items-center bg-blue-600 ">
+    <div className="h-screen w-screen flex justify-center items-center bg-black ">
       <TiltCard />
     </div>
   );
@@ -17,8 +17,8 @@ function TiltCard() {
   const mouseXSpring = useSpring(x);
   const mouseYSpring = useSpring(y);
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["20deg", "-20deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-20deg", "20deg"]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     const { height, width, left, top } = (
@@ -48,7 +48,10 @@ function TiltCard() {
       className="relative h-96 w-72 rounded-xl bg-gradient-to-br from-indigo-300 to-violet-300"
     >
       <div
-        style={{ transform: "translateZ(75px)", transformStyle: "preserve-3d" }}
+        style={{
+          transform: "translateZ(55px)",
+          transformStyle: "preserve-3d",
+        }}
         className="absolute inset-4 grid place-content-center rounded-xl bg-white shadow-lg font-bold text-2xl"
       >
         Hover me
