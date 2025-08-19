@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <div
       ref={ref}
-      className="bg-black text-white h-screen w-full flex justify-center items-center text-[84px] "
+      className="bg-black text-white h-screen w-full flex flex-col justify-center items-center text-[84px] "
     >
       <div className="flex items-center gap-5">
         {text.split(" ").map((char, i) => (
@@ -25,6 +25,9 @@ export default function Page() {
           />
         ))}
       </div>
+      <p className="text-[16px]">
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi, quos?
+      </p>
     </div>
   );
 }

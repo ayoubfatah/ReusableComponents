@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
       "st2.depositphotos.com",
       "images.unsplash.com",
       "images.unsplash.com",
-      ""
+      "purrfect-care-one.vercel.app",
     ],
   },
 };

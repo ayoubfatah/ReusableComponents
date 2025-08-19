@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/maskCursor"
+    "app/maskCursor",
+    "app/animatedTestimonials"
   ],
   "exclude": ["node_modules"]
 }
