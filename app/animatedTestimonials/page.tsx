@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
-
+import "./animatedTest.css";
 const infos = [
   {
     name: "Jack Austin",
@@ -58,6 +58,8 @@ export default function Page() {
 
   return (
     <div className="h-screen bg-white grid grid-cols-[350px_1fr]  w-[800px] mx-auto justify-center items-center text-black">
+      <ImageCards i={textNumber} />
+
       <motion.div
         key={textNumber}
         initial="hidden"
@@ -138,6 +140,17 @@ function Card({
 }) {
   const isCurrent = i === index;
 
+  const [randomPopUp, setRandomPopUp] = useState("");
+
+  useEffect(() => {
+    function getRandomPopUpClass() {
+      const rotations = ["popUp", "popUp2", "popUp3"];
+      return rotations[Math.floor(Math.random() * rotations.length)];
+    }
+
+    setRandomPopUp(getRandomPopUpClass());
+  }, []);
+
   return (
     <motion.div
       animate={{
@@ -146,12 +159,13 @@ function Card({
       }}
       transition={{
         type: "spring",
-        stiffness: 200,
-        damping: 10,
+        stiffness: 130,
+        damping: 13,
+        delay: 0.05,
       }}
       className={`w-full h-full absolute top-0 left-0 rounded-md ${
         isCurrent ? "z-20" : "z-10"
-      }`}
+      } ${isCurrent ? randomPopUp : ""}`}
     >
       <Image
         width={300}
@@ -164,17 +178,6 @@ function Card({
   );
 }
 function getRandomRotation() {
-  const rotations = [
-    "10deg",
-    "12deg",
-    "-12deg",
-    "10deg",
-    "-11deg",
-    "12deg",
-    "14deg",
-    "-15deg",
-    "8deg",
-    "-7deg",
-  ];
+  const rotations = ["10deg", "12deg", "-12deg", "13deg", "-11deg"];
   return rotations[Math.floor(Math.random() * rotations.length)];
 }

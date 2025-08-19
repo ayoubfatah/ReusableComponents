@@ -1,0 +1,49 @@
+.popUp {
+  animation: popUpAnimation 0.4s ease;
+}
+.popUp2 {
+  animation: popUpAnimation2 0.4s ease;
+}
+.popUp3 {
+  animation: popUpAnimation3 0.4s ease;
+}
+
+@keyframes popUpAnimation {
+  0% {
+    transform: translateY(0px) rotate(15deg);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-60px) rotate(7deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+@keyframes popUpAnimation2 {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-70px) rotate(3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+@keyframes popUpAnimation3s {
+  0% {
+    transform: translateY(0px) rotate(-15deg);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-70px) rotate(-7deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px) rotate(0deg);
+  }
+}
