@@ -117,3 +117,64 @@ export default function Page() {
     </div>
   );
 }
+export function ImageCards({ i }: { i: number }) {
+  return (
+    <div className="size-[300px] rounded-md relative transition-all transform-3d">
+      {infos.map((info, index) => (
+        <Card key={index} i={i} index={index} image={info.image} />
+      ))}
+    </div>
+  );
+}
+
+function Card({
+  i,
+  index,
+  image,
+}: {
+  i: number;
+  index: number;
+  image: string;
+}) {
+  const isCurrent = i === index;
+
+  return (
+    <motion.div
+      animate={{
+        rotate: isCurrent ? "0deg" : getRandomRotation(),
+        scale: isCurrent ? 1 : 0.95,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 200,
+        damping: 10,
+      }}
+      className={`w-full h-full absolute top-0 left-0 rounded-md ${
+        isCurrent ? "z-20" : "z-10"
+      }`}
+    >
+      <Image
+        width={300}
+        height={300}
+        className="size-[300px] object-cover rounded-md"
+        src={image}
+        alt=""
+      />
+    </motion.div>
+  );
+}
+function getRandomRotation() {
+  const rotations = [
+    "10deg",
+    "12deg",
+    "-12deg",
+    "10deg",
+    "-11deg",
+    "12deg",
+    "14deg",
+    "-15deg",
+    "8deg",
+    "-7deg",
+  ];
+  return rotations[Math.floor(Math.random() * rotations.length)];
+}
