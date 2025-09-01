@@ -1,49 +1,52 @@
 .popUp {
-  animation: popUpAnimation 0.4s ease;
+  animation: popUpAnimation 0.54s ease;
 }
 .popUp2 {
-  animation: popUpAnimation2 0.4s ease;
+  animation: popUpAnimation2 0.54s ease;
 }
+
 .popUp3 {
-  animation: popUpAnimation3 0.4s ease;
+  animation: popUpAnimation3 0.54s ease;
 }
 
 @keyframes popUpAnimation {
   0% {
-    transform: translateY(0px) rotate(15deg);
+    transform: translateX(0px) translateY(0px) rotate(24deg) translateZ(-200px);
     opacity: 0;
   }
   50% {
-    transform: translateY(-60px) rotate(7deg);
+    transform: translateX(-20px) translateY(-60px) rotate(14deg);
+    opacity: 0.4;
   }
   100% {
     opacity: 1;
-    transform: translateY(0px) rotate(0deg);
+    transform: translateX(0px) translateY(0px) rotate(0deg) translateZ(200) px;
   }
 }
 @keyframes popUpAnimation2 {
   0% {
-    transform: translateY(0px) rotate(0deg);
+    transform: translateX(0px) translateY(0px) rotate(-24deg) translateZ(-200px);
     opacity: 0;
   }
   50% {
-    transform: translateY(-70px) rotate(3deg);
+    transform: translateX(20px) translateY(-70px) rotate(-14deg);
+    opacity: 0.4;
   }
   100% {
     opacity: 1;
-    transform: translateY(0px) rotate(0deg);
+    transform: translateX(0px) translateY(0px) rotate(0deg) translateZ(200px);
   }
 }
-@keyframes popUpAnimation3s {
+@keyframes popUpAnimation3 {
   0% {
-    transform: translateY(0px) rotate(-15deg);
+    transform: translateY(0px) translateZ(-200px);
     opacity: 0;
   }
   50% {
-    transform: translateY(-70px) rotate(-7deg);
+    transform: translateY(-75px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0px) rotate(0deg);
+    transform: translateY(0px translateZ(200));
   }
 }

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import "./animatedTest.css";
+import { cn } from "@/lib/utils";
 const infos = [
   {
     name: "Jack Austin",
@@ -27,7 +28,7 @@ const infos = [
       "https://purrfect-care-one.vercel.app/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1534528741775-53994a69daeb%3Fw%3D800%26auto%3Dformat%26fit%3Dcrop%26q%3D60%26ixlib%3Drb-4.0.3%26ixid%3DM3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVvcGxlfGVufDB8MXwwfHx8Mg%253D%253D&w=1080&q=75",
   },
   {
-    name: "Lana Kim",
+    name: "Sarah jim",
     text: "PurrfectCare helped us streamline our operations and boost efficiency. The detailed analytics dashboard allowed us to identify peak times, leading to better staffing decisions and a 20% increase in revenue!",
     jobTitle: "Pet Hotel Manager",
     image:
@@ -68,11 +69,11 @@ export default function Page() {
         variants={{
           visible: {
             transition: {
-              staggerChildren: 0.01,
+              staggerChildren: 0.015,
             },
           },
         }}
-        className="ml-[20px] "
+        className="ml-[30px]  translate-y-[-5px] "
       >
         <motion.div
           variants={{
@@ -94,23 +95,23 @@ export default function Page() {
                 hidden: { opacity: 0, filter: "blur(8px)" },
                 visible: { opacity: 1, filter: "blur(0px)" },
               }}
-              className="transition-all w-fit text-[19px] font-light"
+              className="transition-all  text-[19px] font-light"
             >
               {c}
             </motion.span>
           ))}
         </motion.div>
 
-        <div className=" flex items-center gap-10 mt-14 ">
+        <div className=" flex items-center gap-10 mt-10 ">
           <button
             onClick={handlePrevious}
-            className="px-5 py-2 bg-black text-white rounded-sm mt-10"
+            className="px-4 py-2 bg-black text-white rounded-sm mt-10"
           >
             Previous
           </button>
           <button
             onClick={handleNext}
-            className="px-5 py-2  bg-black text-white rounded-sm mt-10"
+            className="px-4 py-2  bg-black text-white rounded-sm mt-10"
           >
             Next
           </button>
@@ -119,11 +120,26 @@ export default function Page() {
     </div>
   );
 }
-export function ImageCards({ i }: { i: number }) {
+function ImageCards({ i }: { i: number }) {
+  const [currentAnimation, setCurrentAnimation] = useState("");
+
+  useEffect(() => {
+    const animations = ["popUp", "popUp2", "popUp3"];
+    const randomAnimation =
+      animations[Math.floor(Math.random() * animations.length)];
+    setCurrentAnimation(randomAnimation);
+  }, [i]);
+
   return (
-    <div className="size-[300px] rounded-md relative transition-all transform-3d">
+    <div className="size-[320px] rounded-md relative transition-all transform-3d">
       {infos.map((info, index) => (
-        <Card key={index} i={i} index={index} image={info.image} />
+        <Card
+          key={index}
+          i={i}
+          index={index}
+          image={info.image}
+          animationClass={currentAnimation}
+        />
       ))}
     </div>
   );
@@ -133,44 +149,45 @@ function Card({
   i,
   index,
   image,
+  animationClass,
 }: {
   i: number;
   index: number;
   image: string;
+  animationClass: string;
 }) {
   const isCurrent = i === index;
+  const totalCards = 4;
+  const nextIndex = (index + 1) % totalCards;
 
-  const [randomPopUp, setRandomPopUp] = useState("");
-
-  useEffect(() => {
-    function getRandomPopUpClass() {
-      const rotations = ["popUp", "popUp2", "popUp3"];
-      return rotations[Math.floor(Math.random() * rotations.length)];
-    }
-
-    setRandomPopUp(getRandomPopUpClass());
-  }, []);
+  const putAsNext = i === nextIndex;
 
   return (
     <motion.div
       animate={{
         rotate: isCurrent ? "0deg" : getRandomRotation(),
-        scale: isCurrent ? 1 : 0.95,
+        scale: isCurrent ? 1 : 0.96,
+        opacity: isCurrent ? 1 : 0.95,
       }}
       transition={{
         type: "spring",
-        stiffness: 130,
-        damping: 13,
-        delay: 0.05,
+        stiffness: 150,
+        damping: 9,
       }}
-      className={`w-full h-full absolute top-0 left-0 rounded-md ${
-        isCurrent ? "z-20" : "z-10"
-      } ${isCurrent ? randomPopUp : ""}`}
+      className={cn(
+        `w-full h-full absolute top-0 left-0 rounded-md  transform-3d`,
+        {
+          [animationClass]: isCurrent,
+          "z-30 ": isCurrent,
+          "z-20": putAsNext,
+          "z-10": !isCurrent && !putAsNext,
+        }
+      )}
     >
       <Image
-        width={300}
-        height={300}
-        className="size-[300px] object-cover rounded-md"
+        width={320}
+        height={320}
+        className="size-[320px] object-cover rounded-xl"
         src={image}
         alt=""
       />
@@ -178,6 +195,6 @@ function Card({
   );
 }
 function getRandomRotation() {
-  const rotations = ["10deg", "12deg", "-12deg", "13deg", "-11deg"];
+  const rotations = ["10deg", "12deg", "6deg", "9deg", "-9deg"];
   return rotations[Math.floor(Math.random() * rotations.length)];
 }
