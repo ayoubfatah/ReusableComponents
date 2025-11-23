@@ -14,8 +14,12 @@ function TiltCard() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const mouseXSpring = useSpring(x);
-  const mouseYSpring = useSpring(y);
+  const mouseXSpring = useSpring(x, {
+    mass: 0.3,
+  });
+  const mouseYSpring = useSpring(y, {
+    mass: 0.3,
+  });
 
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["20deg", "-20deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-20deg", "20deg"]);
@@ -33,8 +37,6 @@ function TiltCard() {
 
     x.set(xPct);
     y.set(yPct);
-    // const xPct = `${(mouseX / width) * 100}%`;
-    // const yPct = `${(mouseY / height) * 100}%`;
   }
   function handelMouseLeave() {
     x.set(0);
@@ -54,7 +56,14 @@ function TiltCard() {
         }}
         className="absolute inset-4 grid place-content-center rounded-xl bg-white shadow-lg font-bold text-2xl"
       >
-        Hover me
+        <span
+          style={{
+            transform: "translateZ(65px)",
+            transformStyle: "preserve-3d",
+          }}
+        >
+          Hover me
+        </span>
       </div>
     </motion.div>
   );
