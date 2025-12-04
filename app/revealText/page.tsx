@@ -9,6 +9,7 @@ export default function page() {
         <FlipLink>about</FlipLink>
         <FlipLink>contact</FlipLink>
         <FlipLink>Sing up</FlipLink>
+        <FlipLink>Test</FlipLink>
       </div>
     </div>
   );
@@ -21,15 +22,12 @@ function FlipLink({ children }: { children: string }) {
     <motion.div
       initial="initial"
       whileHover="hovered"
-      className="relative block overflow-hidden text-4xl font-bold whitespace-nowrap uppercase cursor-pointer"
+      className="relative block  text-4xl font-bold whitespace-nowrap uppercase cursor-pointer overflow-hidden"
       style={{ lineHeight: 0.9 }}
     >
       <span className="flex gap-[2px]">
         {children.split("").map((l, i) => (
-          <span
-            key={`top-${i}`}
-            className="relative inline-block  overflow-hidden"
-          >
+          <span key={`top-${i}`} className="  ">
             <motion.span
               className="block"
               transition={{
@@ -50,10 +48,7 @@ function FlipLink({ children }: { children: string }) {
 
       <span className="absolute inset-0 flex gap-[2px]">
         {children.split("").map((l, i) => (
-          <span
-            key={`bot-${i}`}
-            className="relative inline-block  overflow-hidden"
-          >
+          <span key={`bot-${i}`} className="relative   ">
             <motion.span
               className="block"
               transition={{

@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     "app/maskCursor",
     "app/animatedTestimonials"
-  ],
+, "app/stairsanimation"  ],
   "exclude": ["node_modules"]
 }

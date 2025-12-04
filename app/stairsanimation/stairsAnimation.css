@@ -1,0 +1,48 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+  }
+  
+  .wrapper {
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .original-text,
+  .clone-text {
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 40px;
+    font-weight: 900;
+  }
+  
+  .clone-text {
+    position: absolute;
+    inset: 0;
+  }
+  
+  .original-character,
+  .clone-character {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    transition-delay: calc(var(--index) * 0.03s);
+  }
+  
+  .clone-character {
+    transform: translateY(50px);
+  }
+  .wrapper:hover .original-character {
+    transform: translateY(-60px);
+    transition-delay: calc(var(--index) * 0.03s);
+  }
+  
+  .wrapper:hover .clone-character {
+    transform: translateY(0px);
+    transition-delay: calc(var(--index) * 0.03s);
+  }
+  
