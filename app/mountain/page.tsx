@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import MultiLayerParallax from "./ MultiLayerParallax";
 import Lenis from "lenis";
+import { cn } from "../../lib/utils";
 
 export default function Page() {
   useEffect(() => {
@@ -19,10 +20,10 @@ export default function Page() {
     };
   }, []);
   return (
-    <main className="w-screen h-screen bg-black text-white">
+    <main className={cn('w-screen', 'h-screen', 'bg-black', 'text-white')}>
       <MultiLayerParallax />
-      <div className="w-full bg-[#06141D]">
-        <div className="max-w-lg space-y-4 mx-auto py-24 text-neutral-300">
+      <div className={cn('w-full', 'bg-[#06141D]')}>
+        <div className={cn('max-w-lg', 'space-y-4', 'mx-auto', 'py-24', 'text-neutral-300')}>
           <p>
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam quae
             earum nobis quasi repellat. Amet facere nulla dolorum accusantium
