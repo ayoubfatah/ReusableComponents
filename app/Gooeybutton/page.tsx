@@ -17,7 +17,7 @@ type GooeyButtonMenu = {
   childButtonSize: number;
   blurRadius: number;
 };
-const GooeyButtonMenu = ({
+export const GooeyButtonMenu = ({
   buttons,
   color = "black",
   mainButtonSize = 64,
@@ -49,7 +49,7 @@ const GooeyButtonMenu = ({
   const childHalfSize = childButtonSize / 2;
 
   return (
-    <div className="flex items-center justify-center h-screen bg-white">
+    <div className="flex items-center justify-center h-screen ">
       <div className="relative">
         {/* SVG filter that creates the gooey effect */}
         {!hideSvg && (

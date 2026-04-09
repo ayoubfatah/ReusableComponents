@@ -193,7 +193,7 @@ export function GooeyButton() {
         style={{ filter: "url(#gooey)", WebkitFilter: "url(#gooey)" }}
       >
         {/* Static button */}
-        <button className="size-[60px] rounded-full bg-black text-white font-bold"></button>
+        <button className="size-[60px] rounded-full bg-white text-black font-bold"></button>
 
         {/* Magnetic animated button */}
         <motion.button
