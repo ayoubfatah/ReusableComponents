@@ -10,7 +10,7 @@ const debounce = <T extends (...args: any[]) => void>(fn: T, delay: number) => {
 
 const checkSlugAvailability = async (value: string): Promise<boolean> => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  return !["admin", "user", "test"].includes(value);
+  return !["admin", "user", "test", "taken slug"].includes(value);
 };
 
 export { debounce, checkSlugAvailability };

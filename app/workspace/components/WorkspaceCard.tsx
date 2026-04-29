@@ -126,6 +126,7 @@ export function WorkspaceCard({
               animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
               exit={{ opacity: 0, filter: "blur(0.4px)", y: -6 }}
               transition={{
+                delay: 0.07,
                 duration: 0.23,
                 ease: [0.5, 1, 0.89, 1],
               }}
