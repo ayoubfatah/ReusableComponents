@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       "images.unsplash.com",
       "purrfect-care-one.vercel.app",
       "favorit.studio",
+      "examples.motion.dev",
     ],
   },
 };
