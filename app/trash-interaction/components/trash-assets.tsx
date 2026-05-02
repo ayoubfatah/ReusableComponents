@@ -4,7 +4,7 @@ export function TrashFront() {
       <mask
         id="mask0_371_371"
         style={{
-          maskType: 'alpha',
+          maskType: "alpha",
         }}
         maskUnits="userSpaceOnUse"
         x={0}
@@ -19,7 +19,7 @@ export function TrashFront() {
           fillRule="evenodd"
           clipRule="evenodd"
           d="M211 78C326.98 78 421 60.5391 421 39H422L377.869 408.202C366 465.5 293.723 489 211 489C128.277 489 52.5 461 44.131 408.202L0 39H1C1 60.5391 95.0202 78 211 78Z"
-          fill="#E2E8F0"
+          fill="#1E293B"
         />
         <path
           fillRule="evenodd"
@@ -39,7 +39,7 @@ export function TrashFront() {
             fillRule="evenodd"
             clipRule="evenodd"
             d="M211 78C326.98 78 421 60.5391 421 39H422L377.869 408.202C366 465.5 293.723 489 211 489C128.277 489 52.5 461 44.131 408.202L0 39H1C1 60.5391 95.0202 78 211 78Z"
-            fill="#E2E8F0"
+            fill="#1E293B"
           />
           <path
             fillRule="evenodd"
@@ -66,7 +66,7 @@ export function TrashFront() {
             fillRule="evenodd"
             clipRule="evenodd"
             d="M70 449.713C100.53 475.549 154.529 489 211.865 489C269.194 489 321.506 477.713 352.171 451.712C320.007 475.576 268.288 486 211.865 486C155.47 486 102.199 473.592 70 449.713Z"
-            fill="#94A3B8"
+            fill="#0F172A"
           />
         </g>
         <g filter="url(#filter2_f_371_371)">
@@ -74,7 +74,7 @@ export function TrashFront() {
             fillRule="evenodd"
             clipRule="evenodd"
             d="M70 449.713C100.53 475.549 154.529 489 211.865 489C269.194 489 321.506 477.713 352.171 451.712C320.007 475.576 268.288 486 211.865 486C155.47 486 102.199 473.592 70 449.713Z"
-            fill="#94A3B8"
+            fill="#0F172A"
           />
         </g>
       </g>
@@ -89,7 +89,12 @@ export function TrashFront() {
           colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity={0} result="BackgroundImageFix" />
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -99,8 +104,15 @@ export function TrashFront() {
           <feOffset dy={5} />
           <feGaussianBlur stdDeviation={2} />
           <feComposite in2="hardAlpha" operator="arithmetic" k2={-1} k3={1} />
-          <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
-          <feBlend mode="normal" in2="shape" result="effect1_innerShadow_371_371" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.08 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="shape"
+            result="effect1_innerShadow_371_371"
+          />
         </filter>
         <filter
           id="filter1_f_371_371"
@@ -112,8 +124,16 @@ export function TrashFront() {
           colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity={0} result="BackgroundImageFix" />
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-          <feGaussianBlur stdDeviation={1.5} result="effect1_foregroundBlur_371_371" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
+          <feGaussianBlur
+            stdDeviation={1.5}
+            result="effect1_foregroundBlur_371_371"
+          />
         </filter>
         <filter
           id="filter2_f_371_371"
@@ -125,32 +145,75 @@ export function TrashFront() {
           colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity={0} result="BackgroundImageFix" />
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-          <feGaussianBlur stdDeviation={5} result="effect1_foregroundBlur_371_371" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
+          <feGaussianBlur
+            stdDeviation={5}
+            result="effect1_foregroundBlur_371_371"
+          />
         </filter>
-        <linearGradient id="paint0_linear_371_371" x1={422} y1={264} x2={0} y2={264} gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="paint0_linear_371_371"
+          x1={422}
+          y1={264}
+          x2={0}
+          y2={264}
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="white" stopOpacity={0} />
-          <stop offset={0.3} stopColor="white" />
-          <stop offset={0.6999} stopColor="white" />
+          <stop offset={0.3} stopColor="white" stopOpacity={0.05} />
+          <stop offset={0.6999} stopColor="white" stopOpacity={0.05} />
           <stop offset={1} stopColor="white" stopOpacity={0} />
         </linearGradient>
-        <linearGradient id="paint1_linear_371_371" x1={211} y1={82} x2={211} y2={489} gradientUnits="userSpaceOnUse">
-          <stop stopColor="#F1F5F9" />
-          <stop offset={1} stopColor="#64748B" />
+        <linearGradient
+          id="paint1_linear_371_371"
+          x1={211}
+          y1={82}
+          x2={211}
+          y2={489}
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#334155" />
+          <stop offset={1} stopColor="#0F172A" />
         </linearGradient>
-        <linearGradient id="paint2_linear_371_371" x1={422} y1={264} x2={0} y2={264} gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="paint2_linear_371_371"
+          x1={422}
+          y1={264}
+          x2={0}
+          y2={264}
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="white" stopOpacity={0} />
-          <stop offset={0.3} stopColor="white" />
-          <stop offset={0.6999} stopColor="white" />
+          <stop offset={0.3} stopColor="white" stopOpacity={0.05} />
+          <stop offset={0.6999} stopColor="white" stopOpacity={0.05} />
           <stop offset={1} stopColor="white" stopOpacity={0} />
         </linearGradient>
-        <linearGradient id="paint3_linear_371_371" x1={211} y1={82} x2={211} y2={489} gradientUnits="userSpaceOnUse">
-          <stop stopColor="#F1F5F9" />
-          <stop offset={1} stopColor="#64748B" />
+        <linearGradient
+          id="paint3_linear_371_371"
+          x1={211}
+          y1={82}
+          x2={211}
+          y2={489}
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#334155" />
+          <stop offset={1} stopColor="#0F172A" />
         </linearGradient>
-        <linearGradient id="paint4_linear_371_371" x1={211} y1={-2} x2={211} y2={80} gradientUnits="userSpaceOnUse">
-          <stop stopColor="#F8FAFC" />
-          <stop offset={1} stopColor="white" />
+        <linearGradient
+          id="paint4_linear_371_371"
+          x1={211}
+          y1={-2}
+          x2={211}
+          y2={80}
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#475569" />
+          <stop offset={1} stopColor="#334155" />
         </linearGradient>
       </defs>
     </svg>
@@ -161,16 +224,29 @@ export function TrashBack() {
   return (
     <svg viewBox="0 0 450 535" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g filter="url(#filter0_f_371_372)">
-        <ellipse cx={225} cy={412} rx={181} ry={79} fill="#475569" fillOpacity={0.18} />
+        <ellipse
+          cx={225}
+          cy={412}
+          rx={181}
+          ry={79}
+          fill="#000000"
+          fillOpacity={0.4}
+        />
       </g>
       <g filter="url(#filter1_i_371_372)">
-        <ellipse cx={225} cy={41} rx={201} ry={37} fill="url(#paint0_radial_371_372)" />
+        <ellipse
+          cx={225}
+          cy={41}
+          rx={201}
+          ry={37}
+          fill="url(#paint0_radial_371_372)"
+        />
       </g>
       <path
         fillRule="evenodd"
         clipRule="evenodd"
         d="M225 80C340.98 80 435 62.5391 435 41H436L391.869 410.202C380 467.5 307.723 491 225 491C142.277 491 66.5 463 58.131 410.202L14 41H15C15 62.5391 109.02 80 225 80Z"
-        fill="#E2E8F0"
+        fill="#1E293B"
       />
       <path
         fillRule="evenodd"
@@ -190,7 +266,7 @@ export function TrashBack() {
           fillRule="evenodd"
           clipRule="evenodd"
           d="M225 80C340.98 80 435 62.5391 435 41H436L391.869 410.202C380 467.5 307.723 491 225 491C142.277 491 66.5 463 58.131 410.202L14 41H15C15 62.5391 109.02 80 225 80Z"
-          fill="#E2E8F0"
+          fill="#1E293B"
         />
         <path
           fillRule="evenodd"
@@ -223,8 +299,16 @@ export function TrashBack() {
           colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity={0} result="BackgroundImageFix" />
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-          <feGaussianBlur stdDeviation={22} result="effect1_foregroundBlur_371_372" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
+          <feGaussianBlur
+            stdDeviation={22}
+            result="effect1_foregroundBlur_371_372"
+          />
         </filter>
         <filter
           id="filter1_i_371_372"
@@ -236,7 +320,12 @@ export function TrashBack() {
           colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity={0} result="BackgroundImageFix" />
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -246,8 +335,15 @@ export function TrashBack() {
           <feOffset dy={-3} />
           <feGaussianBlur stdDeviation={5.5} />
           <feComposite in2="hardAlpha" operator="arithmetic" k2={-1} k3={1} />
-          <feColorMatrix type="matrix" values="0 0 0 0 0.392157 0 0 0 0 0.454902 0 0 0 0 0.545098 0 0 0 0.5 0" />
-          <feBlend mode="normal" in2="shape" result="effect1_innerShadow_371_372" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="shape"
+            result="effect1_innerShadow_371_372"
+          />
         </filter>
         <filter
           id="filter2_i_371_372"
@@ -259,7 +355,12 @@ export function TrashBack() {
           colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity={0} result="BackgroundImageFix" />
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -269,8 +370,15 @@ export function TrashBack() {
           <feOffset dy={5} />
           <feGaussianBlur stdDeviation={2} />
           <feComposite in2="hardAlpha" operator="arithmetic" k2={-1} k3={1} />
-          <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
-          <feBlend mode="normal" in2="shape" result="effect1_innerShadow_371_372" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.08 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="shape"
+            result="effect1_innerShadow_371_372"
+          />
         </filter>
         <radialGradient
           id="paint0_radial_371_372"
@@ -280,33 +388,68 @@ export function TrashBack() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(225 -36.3205) scale(246.725 324.919)"
         >
-          <stop stopColor="white" />
-          <stop offset={0.65} stopColor="#CBD5E1" />
-          <stop offset={1} stopColor="#94A3B8" />
+          <stop stopColor="#475569" />
+          <stop offset={0.65} stopColor="#1E293B" />
+          <stop offset={1} stopColor="#0F172A" />
         </radialGradient>
-        <linearGradient id="paint1_linear_371_372" x1={436} y1={266} x2={14} y2={266} gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="paint1_linear_371_372"
+          x1={436}
+          y1={266}
+          x2={14}
+          y2={266}
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="white" stopOpacity={0} />
-          <stop offset={0.3} stopColor="white" />
-          <stop offset={0.6999} stopColor="white" />
+          <stop offset={0.3} stopColor="white" stopOpacity={0.05} />
+          <stop offset={0.6999} stopColor="white" stopOpacity={0.05} />
           <stop offset={1} stopColor="white" stopOpacity={0} />
         </linearGradient>
-        <linearGradient id="paint2_linear_371_372" x1={225} y1={84} x2={225} y2={491} gradientUnits="userSpaceOnUse">
-          <stop stopColor="#F1F5F9" />
-          <stop offset={1} stopColor="#64748B" />
+        <linearGradient
+          id="paint2_linear_371_372"
+          x1={225}
+          y1={84}
+          x2={225}
+          y2={491}
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#334155" />
+          <stop offset={1} stopColor="#0F172A" />
         </linearGradient>
-        <linearGradient id="paint3_linear_371_372" x1={436} y1={266} x2={14} y2={266} gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="paint3_linear_371_372"
+          x1={436}
+          y1={266}
+          x2={14}
+          y2={266}
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="white" stopOpacity={0} />
-          <stop offset={0.3} stopColor="white" />
-          <stop offset={0.6999} stopColor="white" />
+          <stop offset={0.3} stopColor="white" stopOpacity={0.05} />
+          <stop offset={0.6999} stopColor="white" stopOpacity={0.05} />
           <stop offset={1} stopColor="white" stopOpacity={0} />
         </linearGradient>
-        <linearGradient id="paint4_linear_371_372" x1={225} y1={84} x2={225} y2={491} gradientUnits="userSpaceOnUse">
-          <stop stopColor="#F1F5F9" />
-          <stop offset={1} stopColor="#64748B" />
+        <linearGradient
+          id="paint4_linear_371_372"
+          x1={225}
+          y1={84}
+          x2={225}
+          y2={491}
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#334155" />
+          <stop offset={1} stopColor="#0F172A" />
         </linearGradient>
-        <linearGradient id="paint5_linear_371_372" x1={225} y1={0} x2={225} y2={82} gradientUnits="userSpaceOnUse">
-          <stop stopColor="#F8FAFC" />
-          <stop offset={1} stopColor="white" />
+        <linearGradient
+          id="paint5_linear_371_372"
+          x1={225}
+          y1={0}
+          x2={225}
+          y2={82}
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#475569" />
+          <stop offset={1} stopColor="#334155" />
         </linearGradient>
       </defs>
     </svg>
