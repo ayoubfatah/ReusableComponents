@@ -1,9 +1,9 @@
 "use client";
 
-import { AnimatePresence, MotionConfig, delay, motion } from "framer-motion";
+import clsx from "clsx";
+import { AnimatePresence, MotionConfig, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { TrashBack, TrashFront } from "./trash-assets";
-import clsx from "clsx";
 
 const IMAGES = [
   "https://examples.motion.dev/photos/creativestudio/finalcuticon.png",
@@ -25,15 +25,15 @@ export function TrashAnimation() {
     : IMAGES;
 
   // Reset states after trash animation completes
-  // useEffect(() => {
-  //   if (removed) {
-  //     setTimeout(() => {
-  //       setImagesToRemove([]);
-  //       setReadyToRemove(false);
-  //       setRemoved(false);
-  //     }, 1200);
-  //   }
-  // }, [removed]);
+  useEffect(() => {
+    if (removed) {
+      setTimeout(() => {
+        setImagesToRemove([]);
+        setReadyToRemove(false);
+        setRemoved(false);
+      }, 1200);
+    }
+  }, [removed]);
 
   return (
     <div className="relative flex h-[500px]  flex-col items-center justify-center">
@@ -100,15 +100,15 @@ export function TrashAnimation() {
                               bounce: 0,
                             }}
                           >
-                            <div className="absolute inset-0.5 rounded-full bg-white" />
+                            <div className="absolute inset-0.5 rounded-full " />
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              className="relative h-5 w-5 flex-shrink-0 rounded-full text-black"
+                              className="relative h-5 w-5 flex-shrink-0 rounded-full text-white"
                               viewBox="0 0 24 24"
                               fill="none"
                             >
                               <path
-                                className="bg-white"
+                                className="text-white bg-black"
                                 fillRule="evenodd"
                                 clipRule="evenodd"
                                 d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM15.5805 9.97493C15.8428 9.65434 15.7955 9.18183 15.4749 8.91953C15.1543 8.65724 14.6818 8.70449 14.4195 9.02507L10.4443 13.8837L9.03033 12.4697C8.73744 12.1768 8.26256 12.1768 7.96967 12.4697C7.67678 12.7626 7.67678 13.2374 7.96967 13.5303L9.96967 15.5303C10.1195 15.6802 10.3257 15.7596 10.5374 15.7491C10.749 15.7385 10.9463 15.6389 11.0805 15.4749L15.5805 9.97493Z"
@@ -215,9 +215,9 @@ export function TrashAnimation() {
           {readyToRemove && !removed ? (
             <motion.div
               className="absolute bottom-10 flex flex-col gap-2"
-              initial={{ clipPath: "circle(3.2% at 50% 50%)" }}
+              initial={{ clipPath: "circle(7.3% at 52% 96%)" }}
               animate={{ clipPath: "circle(96.3% at 52% 83%)" }}
-              exit={{ clipPath: "circle(3.2% at 50% 50%)" }}
+              exit={{ clipPath: "circle(7.3% at 52% 96%)" }}
               transition={{ duration: 0.2 }}
             >
               <button
@@ -246,7 +246,7 @@ export function TrashAnimation() {
                   scale: 1,
                   filter: "blur(0px)",
                   opacity: 1,
-                  rotate: removed ? [0, -2, 2, 0] : 0,
+                  rotate: removed ? [0, -4, 4, -2, 2, 0] : 0,
                 }}
                 exit={{ scale: 1.2, filter: "blur(4px)", opacity: 0 }}
                 transition={{
