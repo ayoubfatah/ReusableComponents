@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import { AnimatePresence, MotionConfig, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TrashBack, TrashFront } from "./trash-assets";
 
 const IMAGES = [
@@ -19,24 +19,14 @@ export function TrashAnimation() {
   const [readyToRemove, setReadyToRemove] = useState<boolean>(false);
   const [removed, setRemoved] = useState(false);
 
-  // Filter images to show/hide based on selection state
+  const shakeAnimation = [0, -4, 4, 0];
+
   const imagesToShow = readyToRemove
     ? IMAGES.filter((img) => !imagesToRemove.includes(img))
     : IMAGES;
 
-  // Reset states after trash animation completes
-  useEffect(() => {
-    if (removed) {
-      setTimeout(() => {
-        setImagesToRemove([]);
-        setReadyToRemove(false);
-        setRemoved(false);
-      }, 1200);
-    }
-  }, [removed]);
-
   return (
-    <div className="relative flex h-[500px]  flex-col items-center justify-center">
+    <div className="relative flex h-[500px] flex-col items-center justify-center">
       <MotionConfig
         transition={{
           type: "spring",
@@ -44,9 +34,8 @@ export function TrashAnimation() {
           bounce: 0.3,
         }}
       >
-        {/* MAIN GRID - Shows all images with selection checkboxes */}
         <ul className="grid grid-cols-3 gap-4">
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence mode="popLayout" initial={false}>
             {!readyToRemove &&
               imagesToShow.map((image) => {
                 const isSelected = imagesToRemove.includes(image);
@@ -68,62 +57,54 @@ export function TrashAnimation() {
                     key={image}
                     className="relative flex h-[100px] w-[100px]"
                   >
-                    {/* SELECTION CHECKBOX - Shows when item is selected for deletion */}
                     <motion.div
+                      layout={false}
                       exit={{ opacity: 0, transition: { duration: 0 } }}
                       className={clsx(
                         "pointer-events-none absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full border border-white/60",
                       )}
                     >
-                      <AnimatePresence>
-                        {isSelected ? (
-                          <motion.div
-                            initial={{
-                              scale: 0,
-                              opacity: 0,
-                              filter: "blur(4px)",
-                            }}
-                            animate={{
-                              scale: 1.1,
-                              opacity: 1,
-                              filter: "blur(0px)",
-                            }}
-                            exit={{
-                              scale: 0,
-                              opacity: 0,
-                              filter: "blur(4px)",
-                              transition: { duration: 0.1 },
-                            }}
-                            transition={{
-                              type: "spring",
-                              duration: 0.25,
-                              bounce: 0,
-                            }}
+                      {isSelected && (
+                        <motion.div
+                          initial={{
+                            scale: 0,
+                            opacity: 0,
+                            filter: "blur(4px)",
+                          }}
+                          animate={{
+                            scale: 1.1,
+                            opacity: 1,
+                            filter: "blur(0px)",
+                          }}
+                          exit={{
+                            scale: 0,
+                            opacity: 0,
+                            filter: "blur(4px)",
+                          }}
+                          style={{ originX: 0.5, originY: 0.5 }}
+                        >
+                          <div className="absolute inset-0.5 rounded-full " />
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="relative h-5 w-5 flex-shrink-0 rounded-full text-white"
+                            viewBox="0 0 24 24"
+                            fill="none"
                           >
-                            <div className="absolute inset-0.5 rounded-full " />
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="relative h-5 w-5 flex-shrink-0 rounded-full text-white"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                            >
-                              <path
-                                className="text-white bg-black"
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM15.5805 9.97493C15.8428 9.65434 15.7955 9.18183 15.4749 8.91953C15.1543 8.65724 14.6818 8.70449 14.4195 9.02507L10.4443 13.8837L9.03033 12.4697C8.73744 12.1768 8.26256 12.1768 7.96967 12.4697C7.67678 12.7626 7.67678 13.2374 7.96967 13.5303L9.96967 15.5303C10.1195 15.6802 10.3257 15.7596 10.5374 15.7491C10.749 15.7385 10.9463 15.6389 11.0805 15.4749L15.5805 9.97493Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                          </motion.div>
-                        ) : null}
-                      </AnimatePresence>
+                            <path
+                              className="text-white bg-black"
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM15.5805 9.97493C15.8428 9.65434 15.7955 9.18183 15.4749 8.91953C15.1543 8.65724 14.6818 8.70449 14.4195 9.02507L10.4443 13.8837L9.03033 12.4697C8.73744 12.1768 8.26256 12.1768 7.96967 12.4697C7.67678 12.7626 7.67678 13.2374 7.96967 13.5303L9.96967 15.5303C10.1195 15.6802 10.3257 15.7596 10.5374 15.7491C10.749 15.7385 10.9463 15.6389 11.0805 15.4749L15.5805 9.97493Z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                        </motion.div>
+                      )}
                     </motion.div>
 
-                    {/* IMAGE BUTTON - Click to select/deselect for deletion */}
                     <motion.button
                       layoutId={image}
-                      className="overflow-hidden "
+                      className="overflow-hidden"
                       aria-label="Remove book"
                       onClick={() => {
                         if (isSelected) {
@@ -136,7 +117,7 @@ export function TrashAnimation() {
                       }}
                     >
                       <motion.img
-                        className="rounded-xl "
+                        className="rounded-xl"
                         alt="A guy"
                         src={image}
                         height={100}
@@ -149,8 +130,7 @@ export function TrashAnimation() {
           </AnimatePresence>
         </ul>
 
-        {/* DELETION CONTROLS - Shows when items are selected for deletion */}
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence initial={false}>
           {imagesToRemove.length > 0 && !readyToRemove ? (
             <motion.div
               initial={{
@@ -170,17 +150,8 @@ export function TrashAnimation() {
               }}
               className="absolute bottom-8 flex gap-1 rounded-xl p-1 shadow-[0_0_0_1px_rgba(0,0,0,0.08),0px_8px_8px_-8px_rgba(0,0,0,0.16)] will-change-transform"
             >
-              <motion.div
-                exit={{
-                  opacity: 0,
-                }}
-                transition={{
-                  duration: 0,
-                }}
-                className="flex w-full justify-between gap-1"
-              >
-                {/* TRASH BUTTON - Confirm deletion */}
-                <button
+              <motion.div className="flex w-full justify-between gap-1">
+                <motion.button
                   onClick={() => {
                     if (readyToRemove) {
                       setRemoved(true);
@@ -188,7 +159,7 @@ export function TrashAnimation() {
                       setReadyToRemove(true);
                     }
                   }}
-                  className="flex w-12 flex-col items-center gap-[1px] rounded-lg bg-[#1A1A1A pt-[6px] pb-1 text-[10px] font-medium text-[#A0A0A0] hover:bg-[#2A2A2A] hover:text-[#FF6B6B]"
+                  className="flex w-12 flex-col items-center gap-[1px] rounded-lg bg-[#2A2A2A] pt-[6px] pb-1 text-[10px] font-medium text-[#A0A0A0] hover:bg-[#2A2A2A] hover:text-[#FF6B6B]"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -204,20 +175,31 @@ export function TrashAnimation() {
                     />
                   </svg>
                   Trash
-                </button>
+                </motion.button>
               </motion.div>
             </motion.div>
           ) : null}
         </AnimatePresence>
 
-        {/* TRASH EXECUTION BUTTON - Shows when ready to delete */}
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence mode="popLayout" initial={false}>
           {readyToRemove && !removed ? (
             <motion.div
               className="absolute bottom-10 flex flex-col gap-2"
-              initial={{ clipPath: "circle(7.3% at 52% 96%)" }}
-              animate={{ clipPath: "circle(96.3% at 52% 83%)" }}
-              exit={{ clipPath: "circle(7.3% at 52% 96%)" }}
+              initial={{
+                filter: "blur(10px)",
+                transform: "scale(0)",
+                opacity: 0,
+              }}
+              animate={{
+                filter: "blur(0px)",
+                transform: "scale(1)",
+                opacity: 1,
+              }}
+              exit={{
+                filter: "blur(10px)",
+                transform: "scale(0)",
+                opacity: 0,
+              }}
               transition={{ duration: 0.2 }}
             >
               <button
@@ -230,14 +212,13 @@ export function TrashAnimation() {
                 }}
                 className="flex h-8 w-[200px] items-center justify-center gap-[15px] rounded-full bg-[#FF3F40] text-center text-[13px] font-semibold text-[#FFFFFF]"
               >
-                Trash {imagesToRemove.length} Collectibles
+                Delete {imagesToRemove.length} Items
               </button>
             </motion.div>
           ) : null}
         </AnimatePresence>
 
-        {/* TRASH ANIMATION - Shows trash can opening when deletion is confirmed */}
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence mode="popLayout" initial={false}>
           {readyToRemove ? (
             <div className="absolute top-1/2 z-10 h-[114px] w-24 -translate-y-1/2">
               <motion.div
@@ -246,13 +227,12 @@ export function TrashAnimation() {
                   scale: 1,
                   filter: "blur(0px)",
                   opacity: 1,
-                  rotate: removed ? [0, -4, 4, -2, 2, 0] : 0,
+                  rotate: removed ? shakeAnimation : 0,
                 }}
                 exit={{ scale: 1.2, filter: "blur(4px)", opacity: 0 }}
                 transition={{
                   rotate: {
                     duration: 0.5,
-                    repeat: removed ? 1 : 0,
                     delay: 0.2,
                   },
                 }}
@@ -288,11 +268,18 @@ export function TrashAnimation() {
               </motion.div>
               <motion.div
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                animate={{
+                  opacity: 1,
+                  rotate: removed ? shakeAnimation : 0,
+                }}
                 exit={{ opacity: 0 }}
                 transition={{
                   delay: 0.18,
                   duration: 0,
+                  rotate: {
+                    duration: 0.5,
+                    delay: 0.2,
+                  },
                 }}
                 className="absolute bottom-[0] left-[3px] h-full w-[90px]"
               >
