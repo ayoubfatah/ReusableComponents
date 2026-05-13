@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.css";
+import "./stairsAnimation.css";
 
 export default function App() {
   const title = "Welcome";
