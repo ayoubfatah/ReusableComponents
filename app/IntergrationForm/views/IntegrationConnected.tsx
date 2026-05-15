@@ -25,7 +25,7 @@ export default function IntegrationConnected() {
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1 }}
             transition={{ duration: 0.3, delay: 0.2 }}
-            d="M5 12l5 5L20 6"g
+            d="M5 12l5 5L20 6"
           />
         </svg>
       </div>
