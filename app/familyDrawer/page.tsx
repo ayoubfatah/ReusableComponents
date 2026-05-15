@@ -72,9 +72,14 @@ export default function FamilyDrawer() {
             className="fixed inset-0 z-10 bg-black/30"
             onClick={() => setIsOpen(false)}
           />
-          <Drawer.Content className="fixed inset-x-4 bottom-4 z-10 mx-auto max-w-[361px] overflow-hidden rounded-[36px] bg-[#FEFFFE] p-6 outline-hidden md:mx-auto md:w-full">
+          <Drawer.Content
+            asChild
+            className="fixed inset-x-4 bottom-4 z-10 mx-auto max-w-[361px] overflow-hidden rounded-[36px] bg-[#FEFFFE] outline-hidden md:mx-auto md:w-full"
+          >
             <motion.div animate={{ height: height ?? 0 }}>
-              <div ref={ref}>{content}</div>
+              <div className="p-6" ref={ref}>
+                {content}
+              </div>
             </motion.div>
           </Drawer.Content>
         </Drawer.Portal>
