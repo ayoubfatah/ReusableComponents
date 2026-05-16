@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     "app/maskCursor",
     "app/animatedTestimonials"
-, "app/stairsanimation", "app/automaticShimmerText"  ],
+, "app/stairsanimation", "app/automaticShimmerText", "app/cssScrollAnimation"  ],
   "exclude": ["node_modules"]
 }
