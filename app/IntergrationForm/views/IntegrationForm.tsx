@@ -40,8 +40,8 @@ export default function IntegrationForm() {
     <motion.div
       key="form"
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, height: 200 }}
-      transition={{ duration: 0.3 }}
+      exit={{ opacity: 0, height: 200, filter: "blur(3px)" }}
+      transition={{ duration: 0.2 }}
     >
       {/* Form body */}
       <div className="px-7 pt-7 pb-0">
