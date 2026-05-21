@@ -109,7 +109,7 @@
   0% {
     translate: -340px 40px;
     rotate: -22deg;
-    scale: 0.82;
+    scale: 0;
     opacity: 0;
     filter: blur(1.5px);
   }

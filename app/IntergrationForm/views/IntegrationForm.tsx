@@ -41,7 +41,7 @@ export default function IntegrationForm() {
       key="form"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, height: 200, filter: "blur(3px)" }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: 0.2, ease: [0.26, 0.08, 0.25, 1] }}
     >
       {/* Form body */}
       <div className="px-7 pt-7 pb-0">

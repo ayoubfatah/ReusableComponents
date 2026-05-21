@@ -7,7 +7,7 @@ export default function IntegrationConnected() {
       key="success"
       initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.2, ease: "easeIn" }}
       className="flex flex-col items-center justify-center gap-2.5 py-10 px-7 h-[200px]"
     >
       <div className="w-10 h-10 rounded-full bg-[#edfaee] border border-[#c6f0c8] flex items-center justify-center mb-1">
@@ -24,7 +24,7 @@ export default function IntegrationConnected() {
           <motion.path
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1 }}
-            transition={{ duration: 0.3, delay: 0.2 }}
+            transition={{ duration: 0.08, delay: 0.1, ease: "easeIn" }}
             d="M5 12l5 5L20 6"
           />
         </svg>

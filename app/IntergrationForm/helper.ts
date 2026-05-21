@@ -9,7 +9,6 @@ const LABEL_MAP: Record<BtnState, string> = {
 export function labelChars(state: BtnState): LabelChar[] {
   const text = LABEL_MAP[state];
   const used: Record<string, number> = {};
-
   return text.split("").map((char) => {
     const k = (used[char] = (used[char] || 0) + 1);
     return { char, key: `${char}-${k}` };

@@ -80,13 +80,6 @@ export default function Page() {
           >
             Generating code ...
           </InfiniteShimmerText>
-          <InfiniteShimmerText
-            textSize="text-[12px]"
-            backgroundColor="#505050"
-            className="text-[12px]!"
-          >
-            Generating code ...
-          </InfiniteShimmerText>
         </div>
       </main>
     </>

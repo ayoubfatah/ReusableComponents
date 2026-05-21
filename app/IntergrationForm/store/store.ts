@@ -3,7 +3,6 @@ import { create } from "zustand";
 export type BtnState = "CONNECT" | "CONNECTING" | "CONNECTED";
 
 type IntegrationStore = {
-  // UI state
   btnState: BtnState;
   isRunning: boolean;
   done: boolean;
