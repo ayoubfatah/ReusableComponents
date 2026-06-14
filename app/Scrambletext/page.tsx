@@ -1,527 +1,447 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
 
-// ─── Core scramble engine ────────────────────────────────────────────────────
+import { useCallback, useEffect, useRef, useState } from "react";
 
-const CHAR_SETS = {
-  lowercase: "abcdefghijklmnopqrstuvwxyz",
-  uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+export const CHAR_SETS = {
   numbers: "0123456789",
-  symbols: "!@#$%^&*()_+-=[]{}|;:,.<>?",
-  braille: "⠁⠂⠃⠄⠅⠆⠇⠈⠉⠊⠋⠌⠍⠎⠏⠐⠑⠒⠓⠔⠕⠖⠗⠘⠙⠚⠛⠜⠝⠞⠟",
-  blocks: "▀▁▂▃▄▅▆▇█▉▊▋▌▍▎▏",
   shades: "░▒▓█",
+  tifinagh: "ⴰⴱⴲⴳⴴⴵⴶⴷⴸⴹⴺⴻⴼⴽⴾⴿⵀⵁⵂⵃⵄⵅⵆⵇⵈⵉⵊⵋⵌⵍⵎⵏⵐⵑⵒⵓⵔⵕⵖⵗⵘⵙⵚⵛⵜⵝⵞⵟⵠⵡⵢⵣⵤⵥⵦⵧ",
+  lowerCase: "abcdefghijklmnopqrstuvwxyz",
+  upperCase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
   default: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-};
+  moons: "☾☽◐◑◒◓◔◕●○◌",
+  orbits: "⟐⟡⟢⟣⟲⟳↺↻⊙⊚⊛⊜",
+  cosmic: "✦✧⋆★☆☄☾☽☉☿♀♁♂♃♄♅♆",
+  constellations: "·∙•⋅∘°✦✧⋆",
+  alien: "⌖⌬⍟⍣⎊⏃⟟⌰⟒⋔⍜⎍",
+  navigation: "⌖⌘⌬⍟⊕⊗⊙◎◉⦿",
+  asteroidField: "·∙•●○◦∘⋅⋆✦✧",
+  deepSpace: "░▒▓█▄▀▁▂▃▅▆▇✦⋆",
+  transmission: "01⎯|/\\_-+=*:.·",
+  runic: "ᚠᚡᚢᚣᚤᚥᚦᚧᚨᚩᚪᚫᚬᚭᚮᚯᚰᚱᚲᚳᚴᚵᚶᚷᚸᚹᚺᚻᚼᚽᚾᚿ",
+  coordinates: "XYZ0123456789+-°.′″",
+} as const;
 
-function getRandomChar(chars) {
+type CharSetName = keyof typeof CHAR_SETS;
+type RevealFrom = "left" | "right" | "center" | "random";
+
+interface ScrambleConfig {
+  text: string;
+  variant: CharSetName;
+  duration: number;
+  revealDelay: number;
+  revealRate: number;
+  settleDuration: number;
+  perturbation: number;
+  from: RevealFrom;
+  cursor: string;
+}
+
+function getRandomChar(chars: string): string {
   return chars[Math.floor(Math.random() * chars.length)];
 }
 
-function scramble(
-  target,
-  {
-    chars = CHAR_SETS.default,
-    duration = 800,
-    revealDelay = 0,
-    revealRate = 40,
-    settleDuration = 200,
-    perturbation = 0.1,
-    from = "left",
-    cursor = "▓",
-    onUpdate,
-    onComplete,
-  } = {},
-) {
-  const text = target;
-  const len = text.length;
-  if (!len) return () => {};
-
-  // Build reveal order
-  let order = Array.from({ length: len }, (_, i) => i);
-  if (from === "right") order.reverse();
-  else if (from === "center") {
-    const mid = Math.floor(len / 2);
-    order = order.sort((a, b) => Math.abs(a - mid) - Math.abs(b - mid));
-  } else if (from === "random") {
-    order = order.sort(() => Math.random() - 0.5);
-  }
-
-  const revealTimes = new Array(len);
-  order.forEach((charIdx, rankIdx) => {
-    const base = revealDelay + rankIdx * revealRate;
-    const jitter = perturbation * revealRate * (Math.random() * 2 - 1);
-    revealTimes[charIdx] = base + jitter;
-  });
-
-  const totalDuration = Math.max(
-    duration,
-    revealDelay + len * revealRate + settleDuration + 100,
-  );
-  const settled = new Array(len).fill(false);
-  let startTime = null;
-  let rafId = null;
-  let done = false;
-
-  const tick = (ts) => {
-    if (done) return;
-    if (!startTime) startTime = ts;
-    const elapsed = ts - startTime;
-
-    let result = "";
-    let allSettled = true;
-
-    for (let i = 0; i < len; i++) {
-      const ch = text[i];
-      if (ch === " " || ch === "\n") {
-        result += ch;
-        continue;
-      }
-
-      const reveal = revealTimes[i];
-      const settleEnd = reveal + settleDuration;
-
-      if (elapsed >= settleEnd) {
-        settled[i] = true;
-        result += ch;
-      } else if (elapsed >= reveal) {
-        allSettled = false;
-        const progress = (elapsed - reveal) / settleDuration;
-        // Show cursor near the reveal front, scramble behind
-        if (cursor && progress < 0.3) {
-          result += cursor;
-        } else {
-          result += getRandomChar(chars);
-        }
-      } else {
-        allSettled = false;
-        result += getRandomChar(chars);
-      }
-    }
-
-    onUpdate?.(result);
-
-    if (allSettled || elapsed >= totalDuration) {
-      onUpdate?.(text);
-      done = true;
-      onComplete?.();
-      return;
-    }
-
-    rafId = requestAnimationFrame(tick);
-  };
-
-  rafId = requestAnimationFrame(tick);
-
-  return () => {
-    done = true;
-    if (rafId) cancelAnimationFrame(rafId);
-  };
-}
-
-// ─── Hook ─────────────────────────────────────────────────────────────────────
-
-export function useScramble(text, options = {}, deps = []) {
-  const [display, setDisplay] = useState(text);
-  const cancelRef = useRef(null);
+function useScramble(config: ScrambleConfig) {
+  const [display, setDisplay] = useState(config.text);
+  const cancelRef = useRef<(() => void) | null>(null);
 
   const play = useCallback(() => {
-    if (cancelRef.current) cancelRef.current();
-    cancelRef.current = scramble(text, {
-      ...options,
-      onUpdate: setDisplay,
+    cancelRef.current?.();
+
+    const {
+      text,
+      variant,
+      duration,
+      revealDelay,
+      revealRate,
+      settleDuration,
+      perturbation,
+      from,
+      cursor,
+    } = config;
+
+    const activeChars = CHAR_SETS[variant];
+    const len = text.length;
+    if (!len) return;
+
+    const order = Array.from({ length: len }, (_, i) => i);
+    if (from === "right") order.reverse();
+    else if (from === "center") {
+      const mid = Math.floor(len / 2);
+      order.sort((a, b) => Math.abs(a - mid) - Math.abs(b - mid));
+    } else if (from === "random") order.sort(() => Math.random() - 0.5);
+
+    const revealTimes: number[] = new Array(len);
+    order.forEach((charIndex, rankIndex) => {
+      const base = revealDelay + rankIndex * revealRate;
+      const jitter = perturbation * revealRate * (Math.random() * 2 - 1);
+      revealTimes[charIndex] = base + jitter;
     });
-  }, [text, ...deps]);
+
+    const totalDuration = Math.max(
+      duration,
+      revealDelay + len * revealRate + settleDuration + 100,
+    );
+
+    let startTime: number | null = null;
+    let rafId: number | null = null;
+    let done = false;
+
+    const tick = (timestamp: number) => {
+      if (done) return;
+      if (startTime === null) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+
+      let result = "";
+      let allSettled = true;
+
+      for (let i = 0; i < len; i++) {
+        const character = text[i];
+        if (
+          character === " " ||
+          character === "\n" ||
+          character === "_" ||
+          character === "-"
+        ) {
+          result += character;
+          continue;
+        }
+
+        const reveal = revealTimes[i];
+        const settleEnd = reveal + settleDuration;
+
+        if (elapsed >= settleEnd) {
+          result += character;
+        } else if (elapsed >= reveal) {
+          allSettled = false;
+          const progress = (elapsed - reveal) / settleDuration;
+          result +=
+            cursor && progress < 0.3 ? cursor : getRandomChar(activeChars);
+        } else {
+          allSettled = false;
+          result += getRandomChar(activeChars);
+        }
+      }
+
+      setDisplay(result);
+
+      if (allSettled || elapsed >= totalDuration) {
+        setDisplay(text);
+        done = true;
+        return;
+      }
+
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+    cancelRef.current = () => {
+      done = true;
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
+  }, [config]);
 
   useEffect(() => {
-    return () => {
-      if (cancelRef.current) cancelRef.current();
-    };
+    setDisplay(config.text);
+  }, [config.text]);
+
+  useEffect(() => {
+    return () => cancelRef.current?.();
   }, []);
 
   return { display, play };
 }
 
-// ─── ScrambleText component ───────────────────────────────────────────────────
+// ─── Slider control ──────────────────────────────────────────────────────────
 
-export function ScrambleText({
-  as: Tag = "span",
-  children,
-  options = {},
-  autoPlay = false,
-  trigger = "hover", // 'hover' | 'click' | 'auto' | 'none'
-  className = "",
-  style = {},
-}) {
-  const text = typeof children === "string" ? children : "";
-  const { display, play } = useScramble(text, options, [
-    JSON.stringify(options),
-  ]);
-
-  useEffect(() => {
-    if (autoPlay || trigger === "auto") play();
-  }, []);
-
-  const handlers = {};
-  if (trigger === "hover") {
-    handlers.onMouseEnter = play;
-    handlers.onPointerEnter = play;
-  }
-  if (trigger === "click") {
-    handlers.onClick = play;
-  }
-
-  return (
-    <Tag
-      className={className}
-      style={{ cursor: "default", ...style }}
-      {...handlers}
-    >
-      {display}
-    </Tag>
-  );
+interface SliderProps {
+  label: string;
+  id: string;
+  min: number;
+  max: number;
+  step: number;
+  value: number;
+  onChange: (v: number) => void;
+  format?: (v: number) => string;
 }
 
-// ─── Demo page ────────────────────────────────────────────────────────────────
-
-const DEMO_OPTIONS = {
-  chars: CHAR_SETS.default,
-  duration: 800,
-  revealRate: 35,
-  settleDuration: 220,
-  perturbation: 0.15,
-  from: "left",
-  cursor: "▓",
-};
-
-const INTRO_OPTIONS = {
-  ...DEMO_OPTIONS,
-  chars: CHAR_SETS.shades,
-  duration: 900,
-  perturbation: 0.2,
-};
-
-export default function Page() {
-  // Staggered intro: each element plays after previous
-  const items = [
-    {
-      tag: "h1",
-      text: "Scramble Text",
-      opts: { ...INTRO_OPTIONS, from: "left" },
-      delay: 0,
-    },
-    {
-      tag: "p",
-      text: "A text scramble effect in React. Hover any element to replay the animation.",
-      opts: { ...DEMO_OPTIONS, chars: CHAR_SETS.braille, from: "left" },
-      delay: 300,
-    },
-    {
-      tag: "h2",
-      text: "Features",
-      opts: { ...DEMO_OPTIONS, from: "center" },
-      delay: 600,
-    },
-  ];
-
-  const listItems = [
-    "Named character sets — lowercase, uppercase, numbers, symbols, braille, blocks",
-    "Directional reveal — left, right, center, random",
-    "Adjustable interval between each character reveal",
-    "Per-character settle duration for the scramble window",
-    "Perturbation randomizes timing for organic feel",
-    "Cursor sweep pattern during reveal phase",
-    "Works with any duration, auto-calculated or fixed",
-  ];
-
+function Slider({
+  label,
+  min,
+  max,
+  step,
+  value,
+  onChange,
+  format,
+}: SliderProps) {
+  const display = format ? format(value) : String(value);
   return (
-    <div style={styles.root}>
-      {/* Subtle grid background */}
-      <div style={styles.gridBg} />
-
-      <main style={styles.main}>
-        {/* Header */}
-        <div style={styles.badge}>
-          <ScrambleText
-            options={{
-              ...DEMO_OPTIONS,
-              chars: CHAR_SETS.numbers,
-              duration: 500,
-            }}
-            trigger="hover"
-            style={styles.badgeText}
-          >
-            v1.0.0
-          </ScrambleText>
-        </div>
-
-        <ScrambleText
-          as="h1"
-          autoPlay
-          options={{ ...INTRO_OPTIONS, duration: 1000 }}
-          trigger="hover"
-          style={styles.h1}
-        >
-          Scramble Text
-        </ScrambleText>
-
-        <ScrambleText
-          as="p"
-          autoPlay
-          options={{
-            ...DEMO_OPTIONS,
-            chars: CHAR_SETS.braille,
-            revealDelay: 200,
-          }}
-          trigger="hover"
-          style={styles.lead}
-        >
-          A lightweight text scramble effect in pure React. No dependencies.
-          Hover any element to replay.
-        </ScrambleText>
-
-        <div style={styles.divider} />
-
-        <ScrambleText
-          as="h2"
-          autoPlay
-          options={{ ...DEMO_OPTIONS, from: "center", revealDelay: 400 }}
-          trigger="hover"
-          style={styles.h2}
-        >
-          Features
-        </ScrambleText>
-
-        <ul style={styles.ul}>
-          {listItems.map((item, i) => (
-            <li key={i} style={styles.li}>
-              <span style={styles.bullet}>▸</span>
-              <ScrambleText
-                options={{
-                  ...DEMO_OPTIONS,
-                  from: "left",
-                  chars: i % 2 === 0 ? CHAR_SETS.lowercase : CHAR_SETS.symbols,
-                  duration: 600 + i * 30,
-                }}
-                trigger="hover"
-                style={styles.liText}
-              >
-                {item}
-              </ScrambleText>
-            </li>
-          ))}
-        </ul>
-
-        <div style={styles.divider} />
-
-        <ScrambleText
-          as="h2"
-          options={{ ...DEMO_OPTIONS, from: "right" }}
-          trigger="hover"
-          style={styles.h2}
-        >
-          Character Sets
-        </ScrambleText>
-
-        <div style={styles.charGrid}>
-          {Object.entries(CHAR_SETS).map(([name, chars]) => (
-            <ScrambleText
-              key={name}
-              options={{
-                chars,
-                duration: 600,
-                revealRate: 30,
-                settleDuration: 180,
-              }}
-              trigger="hover"
-              style={styles.charChip}
-            >
-              {name}
-            </ScrambleText>
-          ))}
-        </div>
-
-        <div style={styles.divider} />
-
-        <ScrambleText
-          as="h2"
-          options={{ ...DEMO_OPTIONS, from: "left" }}
-          trigger="hover"
-          style={styles.h2}
-        >
-          How It Works
-        </ScrambleText>
-
-        <ScrambleText
-          as="p"
-          options={{
-            ...DEMO_OPTIONS,
-            chars: CHAR_SETS.braille,
-            from: "random",
-          }}
-          trigger="hover"
-          style={styles.body}
-        >
-          Each character gets an individual reveal time based on its position
-          and a perturbation jitter. Before reveal, it cycles random characters.
-          During the settle window, a cursor sweep passes through. After settle,
-          the true character locks in.
-        </ScrambleText>
-
-        <ScrambleText
-          as="p"
-          options={{ ...DEMO_OPTIONS, from: "right" }}
-          trigger="hover"
-          style={styles.body}
-        >
-          Duration is either computed from text length × revealRate +
-          settleDuration, or set explicitly. The hook exposes a play() function
-          for programmatic control.
-        </ScrambleText>
-
-        <div style={styles.footer}>
-          <ScrambleText
-            options={{ chars: CHAR_SETS.shades, duration: 400 }}
-            trigger="hover"
-            style={styles.footerText}
-          >
-            Built with useScramble hook · React only · Zero deps
-          </ScrambleText>
-        </div>
-      </main>
+    <div className="flex flex-col gap-1">
+      <div className="flex items-center justify-between">
+        <span className="text-[11px] text-zinc-400 uppercase tracking-widest font-mono">
+          {label}
+        </span>
+        <span className="text-[11px] text-white font-mono tabular-nums w-14 text-right">
+          {display}
+        </span>
+      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="w-full accent-white h-[2px] cursor-pointer"
+        style={{ accentColor: "white" }}
+      />
     </div>
   );
 }
 
-// ─── Styles ───────────────────────────────────────────────────────────────────
+// ─── Select control ───────────────────────────────────────────────────────────
 
-const styles = {
-  root: {
-    minHeight: "100vh",
-    background: "#090909",
-    color: "#e8e4dc",
-    fontFamily: "'Courier New', 'Courier', monospace",
-    position: "relative",
-    overflow: "hidden",
-  },
-  gridBg: {
-    position: "fixed",
-    inset: 0,
-    backgroundImage:
-      "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
-    backgroundSize: "40px 40px",
-    pointerEvents: "none",
-    zIndex: 0,
-  },
-  main: {
-    position: "relative",
-    zIndex: 1,
-    maxWidth: 680,
-    margin: "0 auto",
-    padding: "80px 24px 120px",
-    display: "flex",
-    flexDirection: "column",
-    gap: 20,
-  },
-  badge: {
-    display: "inline-flex",
-    alignSelf: "flex-start",
-    background: "rgba(255,255,255,0.06)",
-    border: "1px solid rgba(255,255,255,0.1)",
-    borderRadius: 4,
-    padding: "2px 10px",
-  },
-  badgeText: {
-    fontSize: "0.7rem",
-    letterSpacing: "0.15em",
-    color: "rgba(255,255,255,0.5)",
-    textTransform: "uppercase",
-  },
-  h1: {
-    fontSize: "clamp(2rem, 6vw, 3.5rem)",
-    fontWeight: 700,
-    lineHeight: 1.05,
-    letterSpacing: "-0.02em",
-    color: "#f0ece2",
-    margin: 0,
-    fontFamily: "'Courier New', monospace",
-  },
-  h2: {
-    fontSize: "1.1rem",
-    fontWeight: 700,
-    letterSpacing: "0.1em",
-    textTransform: "uppercase",
-    color: "rgba(255,255,255,0.45)",
-    margin: 0,
-  },
-  lead: {
-    fontSize: "1rem",
-    lineHeight: 1.65,
-    color: "rgba(232,228,220,0.65)",
-    margin: 0,
-    maxWidth: 520,
-  },
-  body: {
-    fontSize: "0.875rem",
-    lineHeight: 1.7,
-    color: "rgba(232,228,220,0.5)",
-    margin: 0,
-  },
-  divider: {
-    height: 1,
-    background: "rgba(255,255,255,0.07)",
-    margin: "8px 0",
-  },
-  ul: {
-    listStyle: "none",
-    padding: 0,
-    margin: 0,
-    display: "flex",
-    flexDirection: "column",
-    gap: 10,
-  },
-  li: {
-    display: "flex",
-    gap: 12,
-    alignItems: "baseline",
-  },
-  bullet: {
-    color: "rgba(255,255,255,0.2)",
-    fontSize: "0.75rem",
-    flexShrink: 0,
-    userSelect: "none",
-  },
-  liText: {
-    fontSize: "0.875rem",
-    lineHeight: 1.5,
-    color: "rgba(232,228,220,0.6)",
-  },
-  charGrid: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: 8,
-  },
-  charChip: {
-    display: "inline-block",
-    padding: "5px 14px",
-    border: "1px solid rgba(255,255,255,0.1)",
-    borderRadius: 3,
-    fontSize: "0.75rem",
-    letterSpacing: "0.08em",
-    textTransform: "uppercase",
-    color: "rgba(255,255,255,0.55)",
-    background: "rgba(255,255,255,0.03)",
-    cursor: "default",
-    transition: "border-color 0.2s, color 0.2s",
-  },
-  footer: {
-    marginTop: 40,
-    paddingTop: 24,
-    borderTop: "1px solid rgba(255,255,255,0.06)",
-  },
-  footerText: {
-    fontSize: "0.75rem",
-    letterSpacing: "0.05em",
-    color: "rgba(255,255,255,0.2)",
-  },
+interface SelectProps<T extends string> {
+  label: string;
+  value: T;
+  options: { value: T; label: string }[];
+  onChange: (v: T) => void;
+}
+
+function Select<T extends string>({
+  label,
+  value,
+  options,
+  onChange,
+}: SelectProps<T>) {
+  return (
+    <div className="flex flex-col gap-1">
+      <span className="text-[11px] text-zinc-400 uppercase tracking-widest font-mono">
+        {label}
+      </span>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value as T)}
+        className="bg-transparent border border-zinc-700 text-white text-[12px] font-mono rounded px-2 py-1.5 outline-none focus:border-zinc-400 cursor-pointer"
+      >
+        {options.map((o) => (
+          <option key={o.value} value={o.value} className="bg-zinc-900">
+            {o.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+// ─── Main page ────────────────────────────────────────────────────────────────
+
+const DEFAULT_CONFIG: ScrambleConfig = {
+  text: "HELLO WORLD",
+  variant: "upperCase",
+  duration: 1200,
+  revealDelay: 100,
+  revealRate: 55,
+  settleDuration: 220,
+  perturbation: 0.18,
+  from: "left",
+  cursor: "█",
 };
+export default function Page() {
+  const [config, setConfig] = useState<ScrambleConfig>(DEFAULT_CONFIG);
+  const [inputText, setInputText] = useState(DEFAULT_CONFIG.text);
+  const { display, play } = useScramble(config);
+
+  const set = <K extends keyof ScrambleConfig>(
+    key: K,
+    value: ScrambleConfig[K],
+  ) => setConfig((prev) => ({ ...prev, [key]: value }));
+
+  // Auto-play on mount
+  useEffect(() => {
+    const t = setTimeout(play, 300);
+    return () => clearTimeout(t);
+  }, []);
+
+  const handleTextCommit = () => {
+    set("text", inputText || "scrambled.");
+  };
+
+  return (
+    <main
+      className="relative min-h-screen bg-black flex items-center justify-center overflow-hidden"
+      style={{ fontFamily: "monospace" }}
+    >
+      {/* Subtle grid bg */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
+
+      {/* Center stage */}
+      <div className="flex flex-col items-center gap-6 select-none">
+        <p
+          className="text-[11px] tracking-[0.3em] text-zinc-600 uppercase"
+          style={{ letterSpacing: "0.3em" }}
+        >
+          scrambled text effect
+        </p>
+
+        {/* Main display */}
+        <div
+          className="text-white w-[700px] text-center "
+          style={{
+            fontSize: "20px",
+            fontWeight: 600,
+            letterSpacing: "-0.02em",
+            minWidth: "6ch",
+          }}
+        >
+          {display}
+        </div>
+
+        {/* Play button */}
+        <button
+          onClick={play}
+          className="mt-2 px-6 py-2 border border-zinc-700 text-zinc-400 text-[11px] tracking-[0.2em] uppercase hover:border-zinc-400 hover:text-white transition-all duration-200 rounded-sm"
+        >
+          ▶ play
+        </button>
+      </div>
+
+      {/* ── Control panel (top right) ── */}
+      <aside
+        className="fixed top-4 right-4 w-[280px] rounded-lg overflow-hidden"
+        style={{
+          background: "rgba(10,10,10,0.92)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+        }}
+      >
+        {/* Panel header */}
+        <div
+          className="px-4 py-3 flex items-center justify-between"
+          style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+        >
+          <span className="text-[11px] tracking-[0.2em] text-zinc-400 uppercase">
+            controls
+          </span>
+          <button
+            onClick={play}
+            className="text-[10px] tracking-widest text-zinc-500 hover:text-white transition-colors uppercase"
+          >
+            ▶ play
+          </button>
+        </div>
+
+        <div className="p-4 flex flex-col gap-4">
+          {/* Text input */}
+          <div className="flex flex-col gap-1">
+            <span className="text-[11px] text-zinc-400 uppercase tracking-widest font-mono">
+              text
+            </span>
+            <input
+              type="text"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onBlur={handleTextCommit}
+              onKeyDown={(e) => e.key === "Enter" && handleTextCommit()}
+              className="bg-transparent border border-zinc-700 text-white text-[12px] font-mono rounded px-2 py-1.5 outline-none focus:border-zinc-400 placeholder-zinc-600 w-full"
+              placeholder="type something..."
+              spellCheck={false}
+            />
+          </div>
+
+          <Slider
+            label=" duration (ms)"
+            id="duration"
+            min={0}
+            max={5000}
+            step={10}
+            value={config.duration}
+            onChange={(v) => set("duration", v)}
+          />
+          <Slider
+            label="reveal delay (ms)"
+            id="revealDelay"
+            min={0}
+            max={800}
+            step={10}
+            value={config.revealDelay}
+            onChange={(v) => set("revealDelay", v)}
+          />
+          <Slider
+            label="reveal rate (ms)"
+            id="revealRate"
+            min={5}
+            max={200}
+            step={5}
+            value={config.revealRate}
+            onChange={(v) => set("revealRate", v)}
+          />
+          <Slider
+            label="settle duration (ms)"
+            id="settleDuration"
+            min={20}
+            max={800}
+            step={10}
+            value={config.settleDuration}
+            onChange={(v) => set("settleDuration", v)}
+          />
+          <Slider
+            label="perturbation"
+            id="perturbation"
+            min={0}
+            max={1}
+            step={0.01}
+            value={config.perturbation}
+            onChange={(v) => set("perturbation", v)}
+            format={(v) => v.toFixed(2)}
+          />
+
+          <div className="grid grid-cols-2 gap-3">
+            <Select<CharSetName>
+              label="char set"
+              value={config.variant}
+              onChange={(v) => set("variant", v)}
+              options={Object.keys(CHAR_SETS).map((k) => ({
+                value: k as CharSetName,
+                label: k,
+              }))}
+            />
+            <Select<RevealFrom>
+              label="reveal from"
+              value={config.from}
+              onChange={(v) => set("from", v)}
+              options={[
+                { value: "left", label: "left" },
+                { value: "right", label: "right" },
+                { value: "center", label: "center" },
+                { value: "random", label: "random" },
+              ]}
+            />
+          </div>
+
+          {/* Cursor input */}
+          <div className="flex flex-col gap-1">
+            <span className="text-[11px] text-zinc-400 uppercase tracking-widest font-mono">
+              cursor char
+            </span>
+            <input
+              type="text"
+              value={config.cursor}
+              onChange={(e) => set("cursor", e.target.value.slice(-1))}
+              className="bg-transparent border border-zinc-700 text-white text-[12px] font-mono rounded px-2 py-1.5 outline-none focus:border-zinc-400 w-full"
+              maxLength={1}
+            />
+          </div>
+        </div>
+      </aside>
+    </main>
+  );
+}

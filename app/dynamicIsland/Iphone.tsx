@@ -2,7 +2,15 @@ import React, { ReactNode } from "react";
 
 export default function Iphone({ children }: { children: ReactNode }) {
   return (
-    <div className="h-screen w-full  flex  justify-center items-center  overflow-hidden bg-black">
+    <div
+      style={{
+        backgroundImage: `url("/dynamicIsland.svg")`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+      className="h-screen w-full  flex  justify-center items-center   bg-black"
+    >
       <div
         style={{
           backgroundImage: `url("https://static1.squarespace.com/static/5e949a92e17d55230cd1d44f/t/67ffbc88ed6f7d0290cf666f/1744813199669/April16_iPhone.png")`,
@@ -10,7 +18,7 @@ export default function Iphone({ children }: { children: ReactNode }) {
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
-        className=" relative w-[546px] h-[1000px] translate-y-[400px] flex justify-center items-start  bg-black rounded-[85px] ring-white ring-2 border-10  py-4 border-[#232220]"
+        className=" relative w-[446px] h-[1000px] translate-y-[400px] flex justify-center items-start  bg-black rounded-[85px] ring-white ring-2 border-10  py-6 border-[#232220]"
       >
         <div className="">{children}</div>
 

@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       "purrfect-care-one.vercel.app",
       "favorit.studio",
       "examples.motion.dev",
+      "images.fotmob.com",
     ],
   },
 };
