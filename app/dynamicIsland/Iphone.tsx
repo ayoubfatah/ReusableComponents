@@ -4,7 +4,6 @@ export default function Iphone({ children }: { children: ReactNode }) {
   return (
     <div
       style={{
-        backgroundImage: `url("/dynamicIsland.svg")`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

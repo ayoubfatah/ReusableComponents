@@ -30,6 +30,7 @@ type ExitAnimation = {
   scaleX?: number;
   y?: number;
   bounce?: number;
+  opacity?: number;
 };
 
 const VIEW_ENTRIES = Object.entries(VIEW_OPTIONS) as Array<
@@ -273,9 +274,8 @@ const ANIMATION_VARIANTS = {
   },
 
   "football-compact-idle": {
-    scale: 0.9,
-    scaleX: 0.9,
-    bounce: 0.5,
+    scale: 0,
+    opacity: 0,
   },
   "football-compact-ring": {
     scale: 0.9,
@@ -316,7 +316,7 @@ const BOUNCE_VARIANTS = {
   "timer-expanded-timer-compact": 0.35,
   "timer-expanded-football-compact": 0.35,
 
-  "football-compact-idle": 0.5,
+  "football-compact-idle": 0,
   "football-compact-ring": 0,
   "football-compact-timer-compact": 0.35,
   "football-compact-timer-expanded": 0.35,
