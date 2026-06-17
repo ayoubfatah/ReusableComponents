@@ -6,6 +6,7 @@ import Iphone from "./Iphone";
 import { Ring } from "./ring";
 import { Timer } from "./timer";
 import { Football } from "./football";
+import { Crypto } from "./Crypto";
 
 const VIEW_OPTIONS = {
   idle: "Standby",
@@ -13,6 +14,7 @@ const VIEW_OPTIONS = {
   "timer-compact": "Quick Timer",
   "timer-expanded": "Extended Timer",
   "football-compact": "Football Compact",
+  crypto: "crypto",
 } as const;
 
 type View = keyof typeof VIEW_OPTIONS;
@@ -43,6 +45,7 @@ const keyMap: Partial<Record<string, View>> = {
   "3": "timer-compact",
   "4": "timer-expanded",
   "5": "football-compact",
+  "6": "crypto",
 };
 
 export default function DynamicIsland() {
@@ -75,6 +78,8 @@ export default function DynamicIsland() {
 
       case "football-compact":
         return <Football />;
+      case "crypto":
+        return <Crypto />;
 
       case "idle":
         return <div className="h-7" />;
