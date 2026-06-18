@@ -1,5 +1,13 @@
 "use client";
-
+import {
+  ArrowUp,
+  ChevronDown,
+  Mic2,
+  Monitor,
+  Palette,
+  Plus,
+  Smartphone,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   animate,
@@ -8,7 +16,7 @@ import {
   useMotionValue,
 } from "framer-motion";
 import { Send, Sparkles } from "lucide-react";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 type AIConfig = {
   title: string;
@@ -30,13 +38,13 @@ type AIConfig = {
 
 const Example = () => {
   const [config, setConfig] = useState<AIConfig>({
-    title: "Nova AI",
+    title: "Roma AI",
     prompt: "Summarize the last 3 meetings...",
     response:
       "Sure! Across your last 3 meetings, the main themes were Q3 budget approvals, the new design system rollout, and onboarding timelines for the Berlin team.",
     status: "Fetching context...",
     duration: 3,
-    width: 500,
+    width: 700,
     borderSize: 1,
     glowOpacity: 0.4,
     glowBlur: 32,
@@ -95,6 +103,8 @@ const AICard = ({ config }: { config: AIConfig }) => {
         <AITextOutput response={config.response} />
         <Thinking status={config.status} />
       </div>
+      {/* <Composer /> */}
+
       {/* <input
         placeholder="Ask Anything ..."
         className="bg-zinc-800 border w-full rounded-2xl border-zinc-900 focus:outline-none p-3 text-white text-semibold"
@@ -185,17 +195,10 @@ const AIGradientBorder = ({
   }, [duration, turn]);
 
   const gradient = useMotionTemplate`
-    conic-gradient(
-      from ${turn}turn,
-      #f472b6 0%,
-      #c084fc 14%,
-      #818cf8 28%,
-      #38bdf8 42%,
-      #2dd4bf 56%,
-      #fbbf24 70%,
-      #f472b6 100%
-    )
-  `;
+conic-gradient(
+  from ${turn}turn,
+ transparent 0%, rgb(145, 84, 231) 10%, rgb(96, 86, 240) 16.3%, rgb(64, 217, 198) 22.5%, rgb(66, 133, 244) 28.8%, rgb(145, 84, 231) 35%, transparent 45%
+)`;
 
   return (
     <motion.div
@@ -265,7 +268,7 @@ const AIControls = ({
         label="card width"
         id="width"
         min={300}
-        max={800}
+        max={900}
         step={10}
         value={config.width}
         onChange={(v) => setConfigValue("width", v)}
@@ -275,7 +278,7 @@ const AIControls = ({
       <Slider
         label="border size"
         id="borderSize"
-        min={1}
+        min={0.5}
         max={8}
         step={0.5}
         value={config.borderSize}
@@ -427,3 +430,154 @@ const Slider = ({
 };
 
 export default Example;
+
+type Mode = "app" | "web";
+
+type ComposerProps = {
+  defaultValue?: string;
+  onGenerate?: (data: { prompt: string; mode: Mode }) => void;
+};
+function Composer({
+  defaultValue = "A browse tab for a mobile app for romance and date night ideas",
+  onGenerate,
+}: ComposerProps) {
+  const [prompt, setPrompt] = useState(defaultValue);
+  const [mode, setMode] = useState<Mode>("app");
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  return (
+    <div
+      role="presentation"
+      className="relative bg-zinc-800 text-white flex min-h-[220px] w-full flex-col justify-between rounded-2xl  p-4  backdrop-blur-glass transition-all duration-200"
+    >
+      <div className="relative mb-2 flex flex-1 gap-2">
+        <textarea
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+          placeholder="Describe what you want to create..."
+          className="min-h-[120px]  w-full  bg-transparent pt-1 text-base leading-relaxed text-white outline-none placeholder:text-secondary"
+        />
+      </div>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        tabIndex={-1}
+        accept="image/png,.png,image/jpeg,.jpg,.jpeg,image/gif,.gif,image/webp,.webp,image/heic,.heic,image/heif,.heif,text/plain,.txt,text/markdown,.md,.markdown,text/html,.html,.htm,text/javascript,.js,.jsx,.ts,.tsx,application/json,.json,text/css,.css,image/svg+xml,.svg"
+        className="sr-only"
+      />
+
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <IconButton
+            ariaLabel="Add file"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <Plus size={18} />
+          </IconButton>
+
+          <div
+            role="radiogroup"
+            className="relative flex gap-1 rounded-[32px] bg-transparent p-0.5 text-white! backdrop-blur-[40px]"
+          >
+            <ModeButton
+              active={mode === "web"}
+              onClick={() => setMode("web")}
+              icon={<Monitor size={16} />}
+            >
+              Web
+            </ModeButton>
+          </div>
+        </div>
+
+        <div className="flex w-full items-center justify-end gap-2 md:w-auto md:justify-normal">
+          <IconButton ariaLabel="Theme">
+            <Palette size={18} />
+          </IconButton>
+
+          <button
+            type="button"
+            className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-full  px-2.5 py-1.5 text-white   transition-colors hover:bg-state-hover "
+          >
+            <Sparkles size={18} />
+            <span className="whitespace-nowrap text-sm font-medium">
+              3 Flash
+            </span>
+            <ChevronDown size={12} />
+          </button>
+
+          <IconButton ariaLabel="Start Live Mode">
+            <Mic2 size={20} />
+          </IconButton>
+
+          <button
+            type="button"
+            aria-label="Generate designs"
+            onClick={() => onGenerate?.({ prompt, mode })}
+            className="flex size-9 items-center justify-center rounded-full bg-surface-inverse text-inverse-primary transition-transform duration-150 ease-out hover:scale-105 active:scale-95"
+          >
+            <ArrowUp size={16} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function IconButton({
+  children,
+  ariaLabel,
+  onClick,
+}: {
+  children: ReactNode;
+  ariaLabel: string;
+  onClick?: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={ariaLabel}
+      onClick={onClick}
+      className="flex size-9 cursor-pointer items-center justify-center rounded-full bg-transparent text-white transition-colors hover:bg-state-hover active:bg-state-pressed"
+    >
+      {children}
+    </button>
+  );
+}
+
+function ModeButton({
+  active,
+  icon,
+  children,
+  onClick,
+}: {
+  active: boolean;
+  icon: ReactNode;
+  children: ReactNode;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      role="radio"
+      aria-checked={active}
+      onClick={onClick}
+      className={[
+        "relative z-10 flex cursor-pointer items-center gap-1.5 rounded-[32px] px-2 py-2 text-sm font-medium transition-colors",
+        active
+          ? "text-primary"
+          : "text-secondary hover:bg-state-hover hover:text-primary",
+      ].join(" ")}
+    >
+      {active && (
+        <span className="absolute inset-0 z-0 rounded-[32px] bg-state-active" />
+      )}
+
+      <span className="relative z-10 flex items-center gap-1.5">
+        {icon}
+        {children}
+      </span>
+    </button>
+  );
+}
